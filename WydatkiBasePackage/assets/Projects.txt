@@ -1,0 +1,45 @@
+
+
+    {
+       "returmItemsCount": 5,
+       "allItemsCount": 0,
+       "items":
+       [
+           {
+               "name": "Wycieczka W³ochy",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "id": 1,
+               "isActive": false
+           },
+           {
+               "name": "Netplus",
+               "isVisibleForAll": false,
+               "ownerUserId": 1,
+               "id": 15,
+               "isActive": true
+           },
+           {
+               "name": "Kupno mieszkania",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "id": 16,
+               "isActive": true
+           },
+           {
+               "name": "Remont mieszkania",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "id": 18,
+               "isActive": true
+           },
+           {
+               "name": "Wyposarzenie mieszkania",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "id": 19,
+               "isActive": true
+           }
+       ]
+    }
+

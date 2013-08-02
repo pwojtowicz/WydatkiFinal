@@ -1,0 +1,31 @@
+<resources>
+
+    <string name="app_name">WydatkiBasePackage</string>
+    
+    <string name="action_refresh">Odśwież</string>
+    
+    <string name="list_no_content">Brak elementów</string>
+    <string name="list_get_more_data">Następne</string>
+    <string name="text_name">Nazwa</string>
+    <string name="text_balance">Saldo</string>
+    <string name="text_visible_for_all">Widoczne dla wszystkich</string>
+    <string name="text_sum_in_global_balance">Sumuj na liście kont</string>
+    <string name="text_account_image">Logo konta</string>
+    <string name="text_parameter_type">Typ danych</string>
+    <string name="text_default_value">Domyślna wartość</string>
+    <string name="text_list_elements">Elementy listy</string>
+    <string name="text_elements_list_helper">wartości oddziel znakiem ;</string>
+    <string name="text_is_active">Dostępny</string>
+    <string name="switch_yes">TAK</string>
+    <string name="switch_no">NIE</string>
+    <string name="text_category_default_state">Wartość domyślna</string>
+    <string name="text_category_parent">Kategoria nadrzędna</string>
+    <string name="text_category_add_parameter">Dodaj parametr</string>
+    <string name="text_save">Zapisz</string>
+    <string name="text_cancel">Anuluj</string>
+    
+    <string name="action_new_item">Dodaj nowy</string>
+    
+    
+
+</resources>

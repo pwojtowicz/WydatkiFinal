@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+   <string-array name="parameter_types">
+        <item>Tekst</item>
+        <item>Liczba</item>
+        <item>Lista wyboru</item>
+        <item>Pole wyboru</item>
+    </string-array>
+    
+</resources>

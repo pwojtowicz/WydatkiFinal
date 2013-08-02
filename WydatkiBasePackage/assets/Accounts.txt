@@ -1,0 +1,120 @@
+
+
+    {
+       "returmItemsCount": 10,
+       "allItemsCount": 0,
+       "items":
+       [
+           {
+               "name": "Konto ING",
+               "balance": 1208.09,
+               "isSumInGlobalBalance": true,
+               "lastUpdateDateTime": "2013-07-11T23:21:45.157",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 0,
+               "id": 1,
+               "isActive": true
+           },
+           {
+               "name": "Oszczêdnoœci ING",
+               "balance": 160,
+               "isSumInGlobalBalance": false,
+               "lastUpdateDateTime": "2013-07-11T23:21:45.237",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 3,
+               "id": 2,
+               "isActive": true
+           },
+           {
+               "name": "Gotówka Piotrek",
+               "balance": 1.81,
+               "isSumInGlobalBalance": true,
+               "lastUpdateDateTime": "2013-07-11T16:17:16.913",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 2,
+               "id": 3,
+               "isActive": true
+           },
+           {
+               "name": "Gotówka Milena",
+               "balance": 23.94,
+               "isSumInGlobalBalance": true,
+               "lastUpdateDateTime": "2013-07-11T06:46:37.703",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 0,
+               "id": 4,
+               "isActive": true
+           },
+           {
+               "name": "Schowane w domu",
+               "balance": 0,
+               "isSumInGlobalBalance": true,
+               "lastUpdateDateTime": "2013-06-18T12:51:49.237",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 2,
+               "id": 6,
+               "isActive": true
+           },
+           {
+               "name": "mBank Milena",
+               "balance": 0,
+               "isSumInGlobalBalance": false,
+               "lastUpdateDateTime": "2012-10-27T11:39:34.82",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 1,
+               "id": 7,
+               "isActive": false
+           },
+           {
+               "name": "Euro na wycieczkê",
+               "balance": 0,
+               "isSumInGlobalBalance": false,
+               "lastUpdateDateTime": "2012-07-30T07:32:23.037",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 0,
+               "id": 11,
+               "isActive": false
+           },
+           {
+               "name": "Na laptopa",
+               "balance": 0,
+               "isSumInGlobalBalance": false,
+               "lastUpdateDateTime": "2013-06-26T19:18:46.233",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 3,
+               "id": 13,
+               "isActive": true
+           },
+           {
+               "name": "Lokata GetinBank",
+               "balance": 0,
+               "isSumInGlobalBalance": false,
+               "lastUpdateDateTime": "2013-05-03T00:00:00",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 3,
+               "id": 15,
+               "isActive": true
+           },
+           {
+               "name": "Test",
+               "balance": 0,
+               "isSumInGlobalBalance": false,
+               "lastUpdateDateTime": "2013-04-25T06:08:56.023",
+               "isVisibleForAll": true,
+               "ownerUserId": 1,
+               "imageIndex": 0,
+               "id": 16,
+               "isActive": true
+           }
+       ]
+    }
+

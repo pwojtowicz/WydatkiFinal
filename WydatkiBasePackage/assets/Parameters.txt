@@ -1,0 +1,90 @@
+
+
+    {
+       "returmItemsCount": 10,
+       "allItemsCount": 0,
+       "items":
+       [
+           {
+               "name": "Litry",
+               "type": 2,
+               "defaultValue": "",
+               "dataSource": null,
+               "id": 1,
+               "isActive": true
+           },
+           {
+               "name": "Przebieg",
+               "type": 2,
+               "defaultValue": "",
+               "dataSource": null,
+               "id": 2,
+               "isActive": true
+           },
+           {
+               "name": "Ile",
+               "type": 2,
+               "defaultValue": "0",
+               "dataSource": null,
+               "id": 3,
+               "isActive": true
+           },
+           {
+               "name": "Jaki alkohol",
+               "type": 3,
+               "defaultValue": "Piwo",
+               "dataSource": "Piwo;Wódka;Wino;Spirytus :)",
+               "id": 4,
+               "isActive": true
+           },
+           {
+               "name": "Do pe³na",
+               "type": 4,
+               "defaultValue": "True",
+               "dataSource": null,
+               "id": 5,
+               "isActive": true
+           },
+           {
+               "name": "parametry test 1",
+               "type": 1,
+               "defaultValue": "",
+               "dataSource": null,
+               "id": 18,
+               "isActive": true
+           },
+           {
+               "name": "parameter testowy",
+               "type": 1,
+               "defaultValue": "aaa",
+               "dataSource": null,
+               "id": 19,
+               "isActive": true
+           },
+           {
+               "name": "Test cccc",
+               "type": 1,
+               "defaultValue": "Aaa",
+               "dataSource": null,
+               "id": 20,
+               "isActive": false
+           },
+           {
+               "name": "testowy",
+               "type": 1,
+               "defaultValue": "123",
+               "dataSource": null,
+               "id": 21,
+               "isActive": false
+           },
+           {
+               "name": "testowa111",
+               "type": 1,
+               "defaultValue": "",
+               "dataSource": null,
+               "id": 22,
+               "isActive": true
+           }
+       ]
+    }
+

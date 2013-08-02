@@ -1,0 +1,324 @@
+
+
+    {
+       "returmItemsCount": 33,
+       "allItemsCount": 0,
+       "items":
+       [
+           {
+               "name": "Domyœlne",
+               "parentId": null,
+               "RN": "3",
+               "isPositive": false,
+               "parameters": null,
+               "id": 1,
+               "isActive": true
+           },
+           {
+               "name": "Praca",
+               "parentId": null,
+               "RN": "4",
+               "isPositive": false,
+               "parameters": null,
+               "id": 3,
+               "isActive": true
+           },
+           {
+               "name": "P. Dojazd",
+               "parentId": 3,
+               "RN": "4.1",
+               "isPositive": false,
+               "parameters": null,
+               "id": 4,
+               "isActive": true
+           },
+           {
+               "name": "P. Jedzenie",
+               "parentId": 3,
+               "RN": "4.2",
+               "isPositive": false,
+               "parameters": null,
+               "id": 5,
+               "isActive": true
+           },
+           {
+               "name": "P. Wynagrodzenie",
+               "parentId": 3,
+               "RN": "4.3",
+               "isPositive": true,
+               "parameters": null,
+               "id": 6,
+               "isActive": true
+           },
+           {
+               "name": "Rachunki",
+               "parentId": null,
+               "RN": "6",
+               "isPositive": false,
+               "parameters": null,
+               "id": 7,
+               "isActive": true
+           },
+           {
+               "name": "Ra. Inne",
+               "parentId": 7,
+               "RN": "6.1",
+               "isPositive": false,
+               "parameters": null,
+               "id": 8,
+               "isActive": false
+           },
+           {
+               "name": "Ra. Stancja",
+               "parentId": 7,
+               "RN": "6.6",
+               "isPositive": false,
+               "parameters": null,
+               "id": 9,
+               "isActive": false
+           },
+           {
+               "name": "Ra. Telefon",
+               "parentId": 7,
+               "RN": "6.7",
+               "isPositive": false,
+               "parameters": null,
+               "id": 10,
+               "isActive": true
+           },
+           {
+               "name": "Ra. Zdrowie",
+               "parentId": 7,
+               "RN": "6.9",
+               "isPositive": false,
+               "parameters": null,
+               "id": 11,
+               "isActive": true
+           },
+           {
+               "name": "Samochód",
+               "parentId": null,
+               "RN": "8",
+               "isPositive": false,
+               "parameters":
+               [
+                   2
+               ],
+               "id": 12,
+               "isActive": true
+           },
+           {
+               "name": "S. Naprawy",
+               "parentId": 12,
+               "RN": "8.2",
+               "isPositive": false,
+               "parameters": null,
+               "id": 13,
+               "isActive": true
+           },
+           {
+               "name": "S. Paliwo",
+               "parentId": 12,
+               "RN": "8.3",
+               "isPositive": false,
+               "parameters":
+               [
+                   1,
+                   5
+               ],
+               "id": 14,
+               "isActive": true
+           },
+           {
+               "name": "S. Inne",
+               "parentId": 12,
+               "RN": "8.1",
+               "isPositive": false,
+               "parameters": null,
+               "id": 15,
+               "isActive": true
+           },
+           {
+               "name": "Ra. Jedzenie",
+               "parentId": 7,
+               "RN": "6.2",
+               "isPositive": false,
+               "parameters": null,
+               "id": 16,
+               "isActive": true
+           },
+           {
+               "name": "Rozrywka",
+               "parentId": null,
+               "RN": "7",
+               "isPositive": false,
+               "parameters": null,
+               "id": 18,
+               "isActive": true
+           },
+           {
+               "name": "Ro. Jedzenie",
+               "parentId": 18,
+               "RN": "7.2",
+               "isPositive": false,
+               "parameters": null,
+               "id": 19,
+               "isActive": true
+           },
+           {
+               "name": "Ro. Alkohol",
+               "parentId": 18,
+               "RN": "7.1",
+               "isPositive": false,
+               "parameters":
+               [
+                   3,
+                   4
+               ],
+               "id": 20,
+               "isActive": true
+           },
+           {
+               "name": "test 1",
+               "parentId": null,
+               "RN": "9",
+               "isPositive": false,
+               "parameters":
+               [
+                   18
+               ],
+               "id": 29,
+               "isActive": false
+           },
+           {
+               "name": "test 1.2",
+               "parentId": 29,
+               "RN": "9.2",
+               "isPositive": true,
+               "parameters": null,
+               "id": 30,
+               "isActive": false
+           },
+           {
+               "name": "test 1.1",
+               "parentId": 29,
+               "RN": "9.1",
+               "isPositive": false,
+               "parameters": null,
+               "id": 31,
+               "isActive": false
+           },
+           {
+               "name": "test 1.1.1",
+               "parentId": 31,
+               "RN": "9.1.1",
+               "isPositive": false,
+               "parameters": null,
+               "id": 32,
+               "isActive": false
+           },
+           {
+               "name": "test 1.1.1.1",
+               "parentId": 32,
+               "RN": "9.1.1.1",
+               "isPositive": false,
+               "parameters": null,
+               "id": 33,
+               "isActive": false
+           },
+           {
+               "name": "Ra. Odsetki z banku",
+               "parentId": 7,
+               "RN": "6.4",
+               "isPositive": true,
+               "parameters": null,
+               "id": 34,
+               "isActive": true
+           },
+           {
+               "name": "test 1.1.2",
+               "parentId": 31,
+               "RN": "9.1.2",
+               "isPositive": true,
+               "parameters": null,
+               "id": 35,
+               "isActive": false
+           },
+           {
+               "name": "Ra. Odzie¿",
+               "parentId": 7,
+               "RN": "6.5",
+               "isPositive": false,
+               "parameters": null,
+               "id": 36,
+               "isActive": true
+           },
+           {
+               "name": "testowa kategoria",
+               "parentId": null,
+               "RN": "10",
+               "isPositive": false,
+               "parameters": null,
+               "id": 37,
+               "isActive": false
+           },
+           {
+               "name": "tttt",
+               "parentId": null,
+               "RN": "11",
+               "isPositive": false,
+               "parameters": null,
+               "id": 38,
+               "isActive": false
+           },
+           {
+               "name": "Ra. Wyj¹tkowe",
+               "parentId": 7,
+               "RN": "6.8",
+               "isPositive": false,
+               "parameters": null,
+               "id": 39,
+               "isActive": true
+           },
+           {
+               "name": "Chomik",
+               "parentId": null,
+               "RN": "2",
+               "isPositive": false,
+               "parameters": null,
+               "id": 40,
+               "isActive": true
+           },
+           {
+               "name": "qwe1",
+               "parentId": null,
+               "RN": "5",
+               "isPositive": false,
+               "parameters":
+               [
+                   22
+               ],
+               "id": 41,
+               "isActive": false
+           },
+           {
+               "name": "",
+               "parentId": null,
+               "RN": "1",
+               "isPositive": false,
+               "parameters": null,
+               "id": 42,
+               "isActive": false
+           },
+           {
+               "name": "Ra. Mieszkanie PP",
+               "parentId": 7,
+               "RN": "6.3",
+               "isPositive": false,
+               "parameters": null,
+               "id": 43,
+               "isActive": true
+           }
+       ]
+    }
+
