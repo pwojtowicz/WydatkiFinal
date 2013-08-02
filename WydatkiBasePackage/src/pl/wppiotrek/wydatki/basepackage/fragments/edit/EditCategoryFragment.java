@@ -48,22 +48,18 @@ public class EditCategoryFragment extends BaseEditItemFragment<Category> {
 	}
 
 	@Override
-	public void itemToEdit(Category item) {
-		etbx_name.setText(item.getName());
-
-		switch_isActive.setChecked(item.isActive());
-		switch_category_default_state.setChecked(item.isPositive());
-	}
-
-	@Override
 	protected ProviderType getProviderType() {
 		return ProviderType.Categories;
 	}
 
 	@Override
-	public void configureNewItem(Category item) {
-		// TODO Auto-generated method stub
+	public void configureItemView(Category item) {
+		if (item.getId() > 0) {
+			etbx_name.setText(item.getName());
 
+			switch_isActive.setChecked(item.isActive());
+			switch_category_default_state.setChecked(item.isPositive());
+		}
 	}
 
 }

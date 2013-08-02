@@ -53,10 +53,7 @@ public abstract class BaseEditItemFragment<T extends ModelBase> extends
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (actualItem != null && ((ModelBase) actualItem).getId() > 0)
-			itemToEdit(actualItem);
-		else
-			configureNewItem(actualItem);
+		configureItemView(actualItem);
 	}
 
 	public abstract T prepareToSave(T itemToSave);
@@ -69,9 +66,9 @@ public abstract class BaseEditItemFragment<T extends ModelBase> extends
 				OperationType.CreateOrUpdate, (ModelBase) item));
 	}
 
-	public abstract void itemToEdit(T item);
+	// public abstract void itemToEdit(T item);
 
-	public abstract void configureNewItem(T item);
+	public abstract void configureItemView(T item);
 
 	protected abstract ProviderType getProviderType();
 

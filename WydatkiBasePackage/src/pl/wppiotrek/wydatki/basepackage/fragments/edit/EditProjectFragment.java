@@ -51,22 +51,17 @@ public class EditProjectFragment extends BaseEditItemFragment<Project> {
 	}
 
 	@Override
-	public void itemToEdit(Project item) {
-		etbx_name.setText(item.getName());
-
-		switch_isActive.setChecked(item.isActive());
-		switch_isVisible.setChecked(item.getIsVisibleForAll());
-
-	}
-
-	@Override
 	protected ProviderType getProviderType() {
 		return ProviderType.Projects;
 	}
 
 	@Override
-	public void configureNewItem(Project item) {
-		// TODO Auto-generated method stub
+	public void configureItemView(Project item) {
+		if (item.getId() > 0) {
+			etbx_name.setText(item.getName());
+			switch_isActive.setChecked(item.isActive());
+			switch_isVisible.setChecked(item.getIsVisibleForAll());
+		}
 
 	}
 

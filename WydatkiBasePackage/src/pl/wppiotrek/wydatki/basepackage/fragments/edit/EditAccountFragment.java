@@ -63,25 +63,23 @@ public class EditAccountFragment extends BaseEditItemFragment<Account> {
 	}
 
 	@Override
-	public void itemToEdit(Account item) {
-		etbx_name.setText(item.getName());
-
-		switch_inSum.setChecked(item.isSumInGlobalBalance());
-		switch_isActive.setChecked(item.isActive());
-		switch_isVisible.setChecked(item.isVisibleForAll());
-
-		etbx_balance.setText(UnitConverter.doubleToString(item.getBalance()));
-	}
-
-	@Override
-	public void configureNewItem(Account item) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	protected ProviderType getProviderType() {
 		return ProviderType.Accounts;
+	}
+
+	@Override
+	public void configureItemView(Account item) {
+		if (item.getId() > 0) {
+			etbx_name.setText(item.getName());
+
+			switch_inSum.setChecked(item.isSumInGlobalBalance());
+			switch_isActive.setChecked(item.isActive());
+			switch_isVisible.setChecked(item.isVisibleForAll());
+
+			etbx_balance
+					.setText(UnitConverter.doubleToString(item.getBalance()));
+		}
+
 	}
 
 }
