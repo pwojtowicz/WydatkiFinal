@@ -131,4 +131,35 @@ class HttpRequestProvider<T> {
 		}
 		return null;
 	}
+
+	public OperationResult createOrUpdateMany(String urlToContent,
+			HttpAuthorizationCredentials credential,
+			HttpRequestProperties properties, ModelBase[] items) {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(Date.class, new DateTimeSerializer());
+
+		String json = gsonBuilder.create().toJson(items);
+
+		try {
+			HttpResponseBundle response = HttpConnectionManager.sendRequest(
+					EHttpRequestType.PUT, credential, properties, urlToContent,
+					null, json);
+
+			gsonBuilder = new GsonBuilder();
+			gsonBuilder.registerTypeAdapter(Date.class,
+					new DateTimeDeserializer());
+
+			final Gson gson = gsonBuilder.create();
+			try {
+				return gson.fromJson(response.getResponseContent(),
+						OperationResult.class);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+		} catch (HttpException e) {
+			e.printStackTrace();
+		}
+		return new OperationResult(false);
+	}
 }

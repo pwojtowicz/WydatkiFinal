@@ -13,4 +13,6 @@ interface IWebRequestRepository<T> {
 	public OperationResult updateActiveStates(ModelBase[] items);
 
 	public T createOrUpdate(ModelBase item);
+
+	public OperationResult createOrUpdateMany(ModelBase[] item);
 }

@@ -25,6 +25,18 @@
     <string name="text_cancel">Anuluj</string>
     
     <string name="action_new_item">Dodaj nowy</string>
+    <string name="project">Projekt</string>
+    <string name="standart_parameters">Parametry</string>
+    <string name="date_and_time">Data i czas</string>
+    <string name="account_from">Z konta</string>
+    <string name="account_to">Na konto</string>
+    <string name="category">Kategoria</string>
+    <string name="balance">Kwota</string>
+    <string name="note">Notatka</string>
+    <string name="additional_parameters">Parametry dodatkowe</string>
+    <string name="no_selected_value">Nie wybrano</string>
+    <string name="dialog_ok">OK</string>
+    <string name="cancel">Anuluj</string>
     
     
 

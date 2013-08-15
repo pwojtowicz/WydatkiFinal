@@ -1,6 +1,7 @@
 package pl.wppiotrek.wydatki.basepackage.webacynctasks;
 
 import pl.wppiotrek.wydatki.basepackage.entities.ModelBase;
+import pl.wppiotrek.wydatki.basepackage.entities.TransactionFilter;
 import pl.wppiotrek.wydatki.basepackage.enums.OperationType;
 import pl.wppiotrek.wydatki.basepackage.enums.ProviderType;
 
@@ -10,6 +11,13 @@ public class TaskParameters {
 	public OperationType operation;
 	public ModelBase[] items;
 	public ModelBase item;
+	public TransactionFilter transactionFilter;
+
+	public TaskParameters(TransactionFilter filter) {
+		this.provider = ProviderType.Transactions;
+		this.operation = OperationType.GetTransactionWithFiltering;
+		this.transactionFilter = filter;
+	}
 
 	public TaskParameters(ProviderType provider, OperationType operation) {
 		this.provider = provider;

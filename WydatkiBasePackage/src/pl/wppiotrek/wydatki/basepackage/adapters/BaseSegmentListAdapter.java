@@ -145,5 +145,8 @@ public abstract class BaseSegmentListAdapter<T, K> extends BaseAdapter {
 		public static final int ROW_NO_DATA = 0;
 		public static final int ROW_HEADER = 1;
 		public static final int ROW_CONTENT = 2;
+		public static final int ROW_DOWNLOAD_MORE = 3;
+		public static final int ROW_TRY_AGAIN = 4;
+		public static final int ROW_DOWNLOADING = 5;
 	}
 }

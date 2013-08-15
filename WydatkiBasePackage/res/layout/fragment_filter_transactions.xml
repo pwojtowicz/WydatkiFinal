@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_background_dark" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_footer"
+        android:padding="4dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="4dp" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/Style_TextWithShadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/note"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/etbx_filter_note"
+                    style="@style/Style_TextWithShadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="4dp" >
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/Style_TextWithShadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/balance"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:weightSum="1" >
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:gravity="right"
+                        android:text="Od"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <EditText
+                        android:id="@+id/etbx_filter_value_from"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:ems="10"
+                        android:inputType="number" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:gravity="right"
+                        android:text="Do"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <EditText
+                        android:id="@+id/etbx_filter_value_to"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:ems="10"
+                        android:inputType="number" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="4dp" >
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/Style_TextWithShadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <Spinner
+                    android:id="@+id/spinner_filter_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="4dp" >
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    style="@style/Style_TextWithShadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Data od"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/etbx_filter_date_from"
+                    style="@style/Style_TextWithShadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="date"
+                    android:paddingLeft="16dp" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    style="@style/Style_TextWithShadow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Data do"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <EditText
+                    android:id="@+id/etbx_filter_date_to"
+                    style="@style/Style_TextWithShadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="date"
+                    android:paddingLeft="16dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:weightSum="1" >
+
+        <Button
+            android:id="@+id/btn_filter_clear"
+            style="@style/Style_TextWithShadow"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_margin="4dp"
+            android:layout_weight="0.5"
+            android:background="@color/semitransparent"
+            android:text="Wyczyść wszystko" />
+
+        <Button
+            android:id="@+id/btn_filter_save"
+            style="@style/Style_TextWithShadow"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_margin="4dp"
+            android:layout_weight="0.5"
+            android:background="@color/semitransparent"
+            android:text="Zapisz" />
+
+    </LinearLayout>
+
+</RelativeLayout>

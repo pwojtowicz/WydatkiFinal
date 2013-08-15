@@ -10,6 +10,7 @@ import pl.wppiotrek.wydatki.basepackage.enums.OperationType;
 import pl.wppiotrek.wydatki.basepackage.enums.ProviderType;
 import pl.wppiotrek.wydatki.basepackage.interfaces.IBaseListCallback;
 import pl.wppiotrek.wydatki.basepackage.singletons.SingletonLoadedWebContent;
+import pl.wppiotrek.wydatki.basepackage.support.VibratorSupport;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.AsyncTaskDownloadContent;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.IDownloadFromWebListener;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.TaskParameters;
@@ -32,6 +33,7 @@ public abstract class BaseSelectedListFragment<T> extends Fragment implements
 			.getInstance();
 
 	public static String BUNDLE_LIST_CAN_BE_SELECTED = "is_selection_enabled";
+	public static String BUNDLE_LIST_LONG_CLICK_ENABLED = "is_long_click_enabled";
 
 	protected boolean isSelectionEnabled = false;
 	protected ListViewWithSelectionAdapter adapter;
@@ -49,6 +51,8 @@ public abstract class BaseSelectedListFragment<T> extends Fragment implements
 
 		}
 	};
+
+	private boolean isLongClickEnabled;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -109,6 +113,8 @@ public abstract class BaseSelectedListFragment<T> extends Fragment implements
 		if (arguments != null) {
 			isSelectionEnabled = arguments.getBoolean(
 					BUNDLE_LIST_CAN_BE_SELECTED, false);
+			isLongClickEnabled = arguments.getBoolean(
+					BUNDLE_LIST_LONG_CLICK_ENABLED, false);
 		}
 	}
 
@@ -194,7 +200,7 @@ public abstract class BaseSelectedListFragment<T> extends Fragment implements
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 			int position, long arg3) {
-
+		VibratorSupport.vibrate(50);
 		ModelBase item = (ModelBase) adapter.getItem(position);
 
 		mCallbacks.onAddItemAction(item);

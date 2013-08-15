@@ -9,10 +9,10 @@ import com.google.gson.annotations.SerializedName;
 public class ItemContainer<T> implements Serializable {
 
 	@SerializedName("allItemsCount")
-	int allItemsCount;
+	private int allItemsCount;
 
 	@SerializedName("returmItemsCount")
-	int returnItemsCount;
+	private int returnItemsCount;
 
 	@SerializedName("items")
 	T[] items;
@@ -23,6 +23,14 @@ public class ItemContainer<T> implements Serializable {
 
 	public ArrayList<T> getItemsList() {
 		return new ArrayList<T>(Arrays.asList(items));
+	}
+
+	public int getAllItemsCount() {
+		return allItemsCount;
+	}
+
+	public int getReturnItemsCount() {
+		return returnItemsCount;
 	}
 
 }

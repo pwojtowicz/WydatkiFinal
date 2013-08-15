@@ -9,5 +9,10 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_edit_item">EditItemActivity</string>
+    <string name="title_activity_transaction">TransactionActivity</string>
+    <string name="income">Przychody</string>
+    <string name="expenses">Wydatki</string>
+    <string name="title_activity_transaction_filter">Filtry</string>
+    <string name="title_activity_transaction_list">Transakcje</string>
 
 </resources>

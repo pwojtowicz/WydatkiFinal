@@ -39,6 +39,15 @@ public class AsyncTaskDownloadContent extends
 			response = provider.createOrUpdate(parameters.provider,
 					parameters.item);
 			break;
+		case CreateOrUpdateMany:
+			response = provider.createOrUpdateMany(parameters.provider,
+					parameters.items);
+			break;
+
+		case GetTransactionWithFiltering:
+			response = provider
+					.getAllTransactionWithFilter(parameters.transactionFilter);
+			break;
 
 		default:
 			break;
@@ -67,7 +76,7 @@ public class AsyncTaskDownloadContent extends
 		if (result != null)
 			this.listener.onDownloadResult(result);
 		else
-			this.listener.onDownloadChangeState(EDownloadState.End.Fail);
+			this.listener.onDownloadChangeState(EDownloadState.Fail);
 
 	}
 

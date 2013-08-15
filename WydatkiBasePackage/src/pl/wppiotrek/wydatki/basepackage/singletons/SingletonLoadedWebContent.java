@@ -123,4 +123,16 @@ public class SingletonLoadedWebContent {
 			}
 	}
 
+	public Category getCategoryById(int categoryId) {
+		return categories.get(categoryId, null);
+	}
+
+	public Parameter getParameterById(int id) {
+		return parameters.get(id, null);
+	}
+
+	public Account getAccountById(int id) {
+		return accounts.get(id, null);
+	}
+
 }

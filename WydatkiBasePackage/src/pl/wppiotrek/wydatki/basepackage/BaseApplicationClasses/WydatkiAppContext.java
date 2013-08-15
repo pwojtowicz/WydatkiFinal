@@ -2,8 +2,11 @@ package pl.wppiotrek.wydatki.basepackage.BaseApplicationClasses;
 
 import pl.wppiotrek.wydatki.basepackage.database.DataBaseManager;
 import android.app.Application;
+import android.content.Context;
 
 public class WydatkiAppContext extends Application {
+
+	private static Context context;
 
 	public void onCreate() {
 		super.onCreate();
@@ -15,9 +18,11 @@ public class WydatkiAppContext extends Application {
 
 			getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
 					.putBoolean("firstrun", false).commit();
-
-			// new DataBaseHelper(this).onFirstRun();
 		}
+		this.context = this;
+	}
 
+	public static Context getAppContext() {
+		return context;
 	}
 }

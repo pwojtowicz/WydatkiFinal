@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/layout_footer"
         android:layout_alignParentTop="true" >
-
     </ListView>
 
     <LinearLayout
@@ -25,27 +24,39 @@
             android:layout_height="50dp"
             layout="@layout/footer_list_selected_items_options" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/layout_account_summary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:background="@color/background_orange"
             android:gravity="right"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" >
 
             <TextView
                 android:id="@+id/textView2"
+                style="@style/Style_TextWithShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="4dp"
                 android:text="saldo:"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/tv_account_balance"
+                style="@style/Style_TextWithShadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView2"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/textView2"
                 android:text="196.21 zł"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
+
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

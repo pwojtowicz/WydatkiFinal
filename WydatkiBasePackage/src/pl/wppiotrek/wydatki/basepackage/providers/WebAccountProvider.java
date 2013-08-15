@@ -3,6 +3,7 @@ package pl.wppiotrek.wydatki.basepackage.providers;
 import pl.wppiotrek.wydatki.basepackage.entities.Account;
 import pl.wppiotrek.wydatki.basepackage.entities.ItemContainer;
 import pl.wppiotrek.wydatki.basepackage.entities.ModelBase;
+import pl.wppiotrek.wydatki.basepackage.entities.OperationResult;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -43,6 +44,11 @@ class WebAccountProvider extends BaseProvider<Account> {
 			urlToContent += "/" + item.getId();
 		return provider.createOrUpdate(Account.class, urlToContent, credential,
 				properties, item);
+	}
+
+	@Override
+	public OperationResult createOrUpdateMany(ModelBase[] item) {
+		return null;
 	}
 
 }
