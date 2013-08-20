@@ -57,8 +57,6 @@ public class InvokeTransactionAdapter extends BaseAdapter {
 
 		InvokeTransactionParameter paramInstance = (InvokeTransactionParameter) getItem(index);
 
-		System.out.println("Parameter name: " + paramInstance.getName());
-
 		if (view == null) {
 			view = prepareView(view, viewType, paramInstance, false);
 		} else {
@@ -74,10 +72,6 @@ public class InvokeTransactionAdapter extends BaseAdapter {
 		view = CustomViewFactory.createOrFill(viewType, context, paramInstance,
 				fillOnly, view);
 
-		// LayoutInflater layoutInflater = (LayoutInflater) context
-		// .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		//
-		// view = layoutInflater.inflate(R.layout.invoke_action_comment, null);
 		return view;
 	}
 

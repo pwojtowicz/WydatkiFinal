@@ -13,6 +13,7 @@ import pl.wppiotrek.wydatki.basepackage.adapters.InvokeTransactionAdapter;
 import pl.wppiotrek.wydatki.basepackage.adapters.SpinnerAdapter;
 import pl.wppiotrek.wydatki.basepackage.adapters.SpinnerAdapter.SpinerHelper;
 import pl.wppiotrek.wydatki.basepackage.entities.Account;
+import pl.wppiotrek.wydatki.basepackage.entities.BaseTransaction;
 import pl.wppiotrek.wydatki.basepackage.entities.Category;
 import pl.wppiotrek.wydatki.basepackage.entities.InvokeTransactionParameter;
 import pl.wppiotrek.wydatki.basepackage.entities.Parameter;
@@ -45,12 +46,9 @@ public class InvokeTransactionFragment extends BaseFragment implements
 		OnClickListener {
 
 	private static final String SAVED_STATE_TRANSACTION = "pl.wydatki.savedtransactionstate";
-
+	public static final String BUNDLE_TRANSACTION = "pl.wydatki.transaction";
 	public static final String BUNDLE_IS_NEW_TRANSFER = "newTransfer";
 	public static String BUNDLE_IS_NEW_TRANSACTION = "transaction";
-
-	private static final int TIME_DIALOG_ID = 0;
-	private static final int DATE_DIALOG_ID = 1;
 
 	private static final int CalculatorInput_REQUESTCODE = 123;
 
@@ -79,7 +77,6 @@ public class InvokeTransactionFragment extends BaseFragment implements
 	private InvokeTransactionAdapter adapter;
 	private boolean hasAdditionalParameters;
 
-	private Transaction currentTransaction = new Transaction();
 	private TransactionHelper helper = new TransactionHelper();
 	private SingletonLoadedWebContent globals;
 	private ITransactionListener listener;
@@ -98,6 +95,11 @@ public class InvokeTransactionFragment extends BaseFragment implements
 		Bundle extras = getArguments();
 		if (extras != null) {
 			isTransfer = extras.getBoolean(BUNDLE_IS_NEW_TRANSFER, false);
+
+			Object o = extras.getSerializable(BUNDLE_TRANSACTION);
+			if (o != null && o instanceof BaseTransaction) {
+				currentTransaction = new Transaction((BaseTransaction) o);
+			}
 		}
 
 		View view = getCurrentView();
@@ -185,7 +187,6 @@ public class InvokeTransactionFragment extends BaseFragment implements
 		}
 	}
 
-	// @Override
 	protected void configureView() {
 		if (isTransfer) {
 			ll_accountTo.setVisibility(LinearLayout.VISIBLE);
@@ -393,18 +394,6 @@ public class InvokeTransactionFragment extends BaseFragment implements
 				return lhs.getRn().compareToIgnoreCase(rhs.getRn());
 			}
 		});
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		// restoreValues();
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		// saveValues();
 	}
 
 	private void saveValues() {
@@ -684,5 +673,73 @@ public class InvokeTransactionFragment extends BaseFragment implements
 				.getSerializable(SAVED_STATE_TRANSACTION);
 		restoreValues();
 
+	}
+
+	@Override
+	protected void configureAtStart() {
+		this.currentTransaction.setDate(new Date());
+		btn_date.setText(UnitConverter
+				.convertDateToString(this.currentTransaction.getDate()));
+		btn_time.setText(UnitConverter
+				.convertTimeToString(this.currentTransaction.getDate()));
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.currentTransaction.getDate());
+		Year = cal.get(Calendar.YEAR);
+		month = cal.get(Calendar.MONTH);
+		day = cal.get(Calendar.DAY_OF_MONTH);
+		hour = cal.get(Calendar.HOUR_OF_DAY);
+		minute = cal.get(Calendar.MINUTE);
+
+	}
+
+	@Override
+	protected void restoreTransactionForEdit() {
+		TransactionHelper helperTMP = new TransactionHelper();
+
+		helperTMP.note = currentTransaction.getNote();
+
+		helperTMP.value = currentTransaction.getValue().toString();
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(currentTransaction.getDate());
+
+		helperTMP.Year = cal.get(Calendar.YEAR);
+		helperTMP.day = cal.get(Calendar.DAY_OF_MONTH);
+		helperTMP.month = cal.get(Calendar.MONTH);
+		helperTMP.minute = cal.get(Calendar.MINUTE);
+		helperTMP.hour = cal.get(Calendar.HOUR_OF_DAY);
+
+		if (isTransfer) {
+			helperTMP.accMinusPosition = getSelectedPosition(
+					currentTransaction.getAccMinus(), accountFrom);
+			helperTMP.accPlusPosition = getSelectedPosition(
+					currentTransaction.getAccPlus(), accountTo);
+		} else {
+			// if(currentTransaction.getAccPlus()>0)
+		}
+		helperTMP.projektPosition = getSelectedPosition(
+				currentTransaction.getProjectId(), spn_project);
+		helperTMP.categoryPosition = getSelectedPosition(
+				currentTransaction.getCategoryId(), category);
+
+		this.helper = helperTMP;
+		restoreValues();
+	}
+
+	private int getSelectedPosition(int itemId, Spinner spinner) {
+		if (itemId == 0)
+			return 0;
+		if (spinner != null) {
+			SpinnerAdapter tmpAdapter = (SpinnerAdapter) spinner.getAdapter();
+			if (tmpAdapter != null && !tmpAdapter.isEmpty()) {
+				int size = tmpAdapter.getCount();
+				for (int i = 0; i < size; i++) {
+					SpinnerObject so = tmpAdapter.getItem(i);
+					if (so.getId() == itemId)
+						return i;
+				}
+			}
+		}
+		return 0;
 	}
 }

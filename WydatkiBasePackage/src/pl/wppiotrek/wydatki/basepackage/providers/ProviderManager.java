@@ -29,6 +29,11 @@ public class ProviderManager {
 		return provider.updateActiveStates(items);
 	}
 
+	public OperationResult delete(ProviderType providerType, ModelBase item) {
+		IWebRequestRepository provider = getProvider(providerType);
+		return provider.delateItem(item);
+	}
+
 	public Object createOrUpdate(ProviderType providerType, ModelBase item) {
 		IWebRequestRepository provider = getProvider(providerType);
 		return provider.createOrUpdate(item);

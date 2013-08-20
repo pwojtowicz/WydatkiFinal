@@ -48,22 +48,12 @@ public class AsyncTaskDownloadContent extends
 			response = provider
 					.getAllTransactionWithFilter(parameters.transactionFilter);
 			break;
+		case Delete:
+			response = provider.delete(parameters.provider, parameters.item);
 
 		default:
 			break;
 		}
-
-		// response = provider.getAll(parameters.provider, true);
-		// response = provider.getById(ProviderType.Categories, 1);
-
-		// response = provider.getAll(ProviderType.Accounts, false);
-		// response = provider.getById(ProviderType.Accounts, 1);
-		//
-		// response = provider.getAll(ProviderType.Parameters, false);
-		// response = provider.getById(ProviderType.Parameters, 1);
-		//
-		// response = provider.getAll(ProviderType.Projects, false);
-		// response = provider.getById(ProviderType.Projects, 1);
 
 		return response;
 

@@ -8,11 +8,12 @@
 
     <Switch
         android:id="@+id/invoke_action_switch"
-        style="@style/Style_TextWithShadow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:checked="true"
         android:text="Switch"
         android:textOff="@string/switch_no"
-        android:textOn="@string/switch_yes" />
+        android:textOn="@string/switch_yes"
+        android:thumb="@drawable/switch_inner_holo_dark" />
 
 </LinearLayout>

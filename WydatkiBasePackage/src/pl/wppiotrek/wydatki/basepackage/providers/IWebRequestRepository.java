@@ -2,6 +2,7 @@ package pl.wppiotrek.wydatki.basepackage.providers;
 
 import pl.wppiotrek.wydatki.basepackage.entities.ItemContainer;
 import pl.wppiotrek.wydatki.basepackage.entities.ModelBase;
+import pl.wppiotrek.wydatki.basepackage.entities.MultiOperationResult;
 import pl.wppiotrek.wydatki.basepackage.entities.OperationResult;
 
 interface IWebRequestRepository<T> {
@@ -14,5 +15,7 @@ interface IWebRequestRepository<T> {
 
 	public T createOrUpdate(ModelBase item);
 
-	public OperationResult createOrUpdateMany(ModelBase[] item);
+	public MultiOperationResult createOrUpdateMany(ModelBase[] item);
+
+	public OperationResult delateItem(ModelBase item);
 }

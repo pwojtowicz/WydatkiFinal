@@ -1,20 +1,80 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.wppiotrek.wydatki.basepackage"
-    android:versionCode="189"
-    android:versionName="1.0.89" >
+    android:versionCode="1783"
+    android:versionName="1.0.1783" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="15" />
-    
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name="pl.wppiotrek.wydatki.basepackage.BaseApplicationClasses.WydatkiAppContext"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <activity
+            android:name="pl.wppiotrek.wydatki.basepackage.activities.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="pl.wppiotrek.wydatki.basepackage.activities.EntitiesActivity"
+            android:label="@string/title_activity_entities"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.wppiotrek.wydatki.basepackage.activities.MainActivity" />
+        </activity>
+        <activity
+            android:name="pl.wppiotrek.wydatki.basepackage.activities.EditItemActivity"
+            android:label="@string/title_activity_edit_item"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.wppiotrek.wydatki.basepackage.activities.MainActivity" />
+        </activity>
+        <activity
+            android:name="pl.wppiotrek.wydatki.basepackage.activities.TransactionActivity"
+            android:label="@string/title_activity_transaction"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="pl.wppiotrek.wydatki.basepackage.activities.CalculatorInput"
+            android:label="@string/title_activity_transaction"
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="pl.wppiotrek.wydatki.basepackage.activities.TransactionFilterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            android:label="@string/title_activity_transaction_filter" >
+        </activity>
+        <activity
+            android:name="pl.wppiotrek.wydatki.basepackage.activities.TransactionListActivity"
+            android:label="@string/title_activity_transaction_list"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pl.wppiotrek.wydatki.basepackage.activities.MainActivity" />
+        </activity>
+        <activity
+            android:name="pl.wppiotrek.wydatki.basepackage.activities.TransactionDetailsActivity"
+            android:label="@string/title_activity_transaction"
+            android:theme="@android:style/Theme.Dialog"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

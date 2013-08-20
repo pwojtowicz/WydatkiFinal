@@ -23,10 +23,16 @@ public class BaseTransaction extends ModelBase implements Serializable {
 	protected Date date;
 
 	@SerializedName("categoryId")
-	protected int categoryId;
+	private int categoryId;
 
 	@SerializedName("projectId")
 	protected int projectId;
+
+	@SerializedName("parameters")
+	private Parameter[] parameters;
+
+	@SerializedName("objectHash")
+	private String objectHash;
 
 	/**
 	 * @return the accMinus
@@ -114,4 +120,25 @@ public class BaseTransaction extends ModelBase implements Serializable {
 	public void setProjectId(int projectId) {
 		this.projectId = projectId;
 	}
+
+	public Parameter[] getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Parameter[] parameters) {
+		this.parameters = parameters;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getObjectHash() {
+		return objectHash;
+	}
+
+	public void setObjectHash(String objectHash) {
+		this.objectHash = objectHash;
+	}
+
 }

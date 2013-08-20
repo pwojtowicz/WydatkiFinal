@@ -82,8 +82,7 @@
             <Spinner
                 android:id="@+id/invoke_transaction_header_spinner_account_from"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/btn_blue" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </LinearLayout>
@@ -107,8 +106,7 @@
         <Spinner
             android:id="@+id/invoke_transaction_header_spinner_account_to"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/btn_blue" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -131,8 +129,7 @@
         <Spinner
             android:id="@+id/invoke_transaction_header_spinner_category"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/btn_blue" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

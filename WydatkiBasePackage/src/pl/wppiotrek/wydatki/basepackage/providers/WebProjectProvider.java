@@ -2,7 +2,7 @@ package pl.wppiotrek.wydatki.basepackage.providers;
 
 import pl.wppiotrek.wydatki.basepackage.entities.ItemContainer;
 import pl.wppiotrek.wydatki.basepackage.entities.ModelBase;
-import pl.wppiotrek.wydatki.basepackage.entities.OperationResult;
+import pl.wppiotrek.wydatki.basepackage.entities.MultiOperationResult;
 import pl.wppiotrek.wydatki.basepackage.entities.Project;
 
 import com.google.gson.reflect.TypeToken;
@@ -46,7 +46,7 @@ public class WebProjectProvider extends BaseProvider<Project> {
 	}
 
 	@Override
-	public OperationResult createOrUpdateMany(ModelBase[] item) {
+	public MultiOperationResult createOrUpdateMany(ModelBase[] item) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -3,6 +3,7 @@ package pl.wppiotrek.wydatki.basepackage.singletons;
 import java.util.ArrayList;
 
 import pl.wppiotrek.wydatki.basepackage.entities.Account;
+import pl.wppiotrek.wydatki.basepackage.entities.BaseTransaction;
 import pl.wppiotrek.wydatki.basepackage.entities.Category;
 import pl.wppiotrek.wydatki.basepackage.entities.ModelBase;
 import pl.wppiotrek.wydatki.basepackage.entities.Parameter;
@@ -13,6 +14,9 @@ public class SingletonLoadedWebContent {
 
 	private static volatile SingletonLoadedWebContent instance = null;
 	private boolean wasContentLoadedAtStart;
+
+	private ArrayList<BaseTransaction> newTransactions = new ArrayList<BaseTransaction>();
+	private ArrayList<BaseTransaction> deletedTransactions = new ArrayList<BaseTransaction>();
 
 	private SparseArray<Account> accounts = new SparseArray<Account>();
 	private SparseArray<Category> categories = new SparseArray<Category>();
@@ -133,6 +137,38 @@ public class SingletonLoadedWebContent {
 
 	public Account getAccountById(int id) {
 		return accounts.get(id, null);
+	}
+
+	public Project getProjectById(int id) {
+		return projects.get(id, null);
+	}
+
+	public ArrayList<BaseTransaction> getTransactions() {
+		return newTransactions;
+	}
+
+	public void clearTransactions() {
+		this.newTransactions.clear();
+	}
+
+	public void addTransactions(ArrayList<BaseTransaction> transactions) {
+		this.newTransactions.addAll(transactions);
+	}
+
+	public void addTransaction(BaseTransaction item) {
+		this.newTransactions.add(item);
+	}
+
+	public void addDeletedTransaction(BaseTransaction item) {
+		this.deletedTransactions.add(item);
+	}
+
+	public ArrayList<BaseTransaction> getDeletedTransactions() {
+		return deletedTransactions;
+	}
+
+	public void clearDeletedTransactions() {
+		this.deletedTransactions.clear();
 	}
 
 }

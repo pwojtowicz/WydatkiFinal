@@ -19,6 +19,8 @@ public class TransactionFilter implements Serializable {
 	private Integer accountId;
 	private Integer categoryId;
 
+	private int categorySpinnerPosition;
+
 	private String note;
 
 	/*
@@ -56,11 +58,10 @@ public class TransactionFilter implements Serializable {
 			sb.append("&valueTo=" + getValueTo());
 
 		if (getDateFrom() != null)
-			sb.append("&valueFrom=" + getStringFromDate(getDateFrom()));
+			sb.append("&dateFrom=" + getStringFromDate(getDateFrom()));
 
 		if (getDateTo() != null)
 			sb.append("&dateTo=" + getStringFromDate(getDateTo()));
-
 		return sb.toString();
 	}
 
@@ -160,6 +161,14 @@ public class TransactionFilter implements Serializable {
 		if (getDateTo() != null)
 			return true;
 		return false;
+	}
+
+	public int getCategorySpinnerPosition() {
+		return categorySpinnerPosition;
+	}
+
+	public void setCategorySpinnerPosition(int categorySpinnerPosition) {
+		this.categorySpinnerPosition = categorySpinnerPosition;
 	}
 
 }

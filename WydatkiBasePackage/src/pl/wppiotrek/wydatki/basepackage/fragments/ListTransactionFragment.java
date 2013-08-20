@@ -3,6 +3,8 @@ package pl.wppiotrek.wydatki.basepackage.fragments;
 import java.util.ArrayList;
 
 import pl.wppiotrek.wydatki.basepackage.R;
+import pl.wppiotrek.wydatki.basepackage.activities.TransactionDetailsActivity;
+import pl.wppiotrek.wydatki.basepackage.activities.TransactionFilterActivity;
 import pl.wppiotrek.wydatki.basepackage.adapters.BaseSegmentListAdapter.ERowTypes;
 import pl.wppiotrek.wydatki.basepackage.adapters.TransactionListAdapter;
 import pl.wppiotrek.wydatki.basepackage.entities.Account;
@@ -10,10 +12,12 @@ import pl.wppiotrek.wydatki.basepackage.entities.BaseTransaction;
 import pl.wppiotrek.wydatki.basepackage.entities.ItemContainer;
 import pl.wppiotrek.wydatki.basepackage.entities.TransactionFilter;
 import pl.wppiotrek.wydatki.basepackage.enums.ViewState;
+import pl.wppiotrek.wydatki.basepackage.singletons.SingletonLoadedWebContent;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.AsyncTaskDownloadContent;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.EDownloadState;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.IDownloadFromWebListener;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.TaskParameters;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
@@ -29,6 +33,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -68,11 +73,7 @@ public class ListTransactionFragment extends Fragment implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.action_filter) {
-			Intent intent = new Intent(
-					"pl.wppiotrek.wydatki.v2.TransactionFilterActivity");
-			intent.putExtra(
-					TransactionFilterFragment.BUNDLE_TRANSACTION_FILTER, filter);
-			startActivityForResult(intent, REQUEST_CODE_FILTER);
+			showFilterActivity();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -82,6 +83,7 @@ public class ListTransactionFragment extends Fragment implements
 		listView = (ListView) convertView.findViewById(R.id.listView);
 
 		listView.setOnItemClickListener(listViewItemClickListener);
+		listView.setOnItemLongClickListener(listViewLongItemClickListener);
 		rl_filter_active_layout = (RelativeLayout) convertView
 				.findViewById(R.id.rl_filter_active_layout);
 		tv_loaded_count = (TextView) convertView
@@ -106,12 +108,26 @@ public class ListTransactionFragment extends Fragment implements
 		}
 	};
 
+	OnItemLongClickListener listViewLongItemClickListener = new OnItemLongClickListener() {
+
+		@Override
+		public boolean onItemLongClick(AdapterView<?> a, View view,
+				int position, long arg3) {
+			if (adapter.getItemViewType(position) == ERowTypes.ROW_CONTENT) {
+				onListItemLongClick(adapter.getItem(position));
+				return true;
+			}
+			return false;
+		}
+
+	};
+
 	OnItemClickListener listViewItemClickListener = new OnItemClickListener() {
 
 		@Override
 		public void onItemClick(AdapterView<?> a, View view, int position,
 				long arg3) {
-			if (adapter.getViewTypeCount() == ERowTypes.ROW_CONTENT)
+			if (adapter.getItemViewType(position) == ERowTypes.ROW_CONTENT)
 				onListItemClick(adapter.getItem(position));
 			else
 				onListItemClick(adapter.getActualViewState());
@@ -156,6 +172,8 @@ public class ListTransactionFragment extends Fragment implements
 
 	private void reloadTransactions(boolean reloadItems) {
 		if (reloadItems && adapter != null) {
+			if (filter.getAccountId() == null)
+				SingletonLoadedWebContent.getInstance().clearTransactions();
 			adapter.clearItems();
 			loadedItems = new ArrayList<BaseTransaction>();
 		}
@@ -221,6 +239,10 @@ public class ListTransactionFragment extends Fragment implements
 			else
 				adapter.removeControlView();
 		}
+
+		if (container.getAllItemsCount() == 0)
+			adapter.setViewStateAsNoContent();
+
 		adapter.notifyDataSetChanged();
 
 		if (this.loadedItems.size() > 0) {
@@ -231,8 +253,19 @@ public class ListTransactionFragment extends Fragment implements
 			tv_loaded_count.setVisibility(View.GONE);
 	}
 
+	protected void onListItemLongClick(Object item) {
+		if (item instanceof BaseTransaction) {
+
+		}
+	}
+
 	protected void onListItemClick(Object item) {
 		if (item instanceof BaseTransaction) {
+			Intent intent = new Intent(getActivity(),
+					TransactionDetailsActivity.class);
+			intent.putExtra(TransactionDetailsActivity.BUNDLE_TRANSACTION,
+					(BaseTransaction) item);
+			startActivity(intent);
 
 		} else if (item instanceof ViewState) {
 			ViewState vs = (ViewState) item;
@@ -264,6 +297,64 @@ public class ListTransactionFragment extends Fragment implements
 
 	private void downloadAgain() {
 		downloadTransactions();
+	}
+
+	protected void showFilterActivity() {
+		Intent intent = new Intent(getActivity(),
+				TransactionFilterActivity.class);
+		intent.putExtra(TransactionFilterFragment.BUNDLE_TRANSACTION_FILTER,
+				filter);
+		startActivityForResult(intent, REQUEST_CODE_FILTER);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_CODE_FILTER) {
+			if (resultCode == Activity.RESULT_OK && data.getExtras() != null) {
+				TransactionFilter filter = (TransactionFilter) data
+						.getExtras()
+						.getSerializable(
+								TransactionFilterFragment.BUNDLE_TRANSACTION_FILTER);
+				if (filter != null)
+					updateFilter(filter);
+			}
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		reloadNewTransactions();
+		reloadDeletedTransactions();
+	}
+
+	private void reloadDeletedTransactions() {
+		ArrayList<BaseTransaction> deletedTransactions = SingletonLoadedWebContent
+				.getInstance().getDeletedTransactions();
+		if (deletedTransactions.size() > 0 && adapter != null) {
+			for (BaseTransaction baseTransaction : deletedTransactions) {
+				adapter.removeItem(baseTransaction);
+			}
+			adapter.notifyDataSetChanged();
+		}
+		SingletonLoadedWebContent.getInstance().clearDeletedTransactions();
+
+	}
+
+	private void reloadNewTransactions() {
+		if (filter.getAccountId() == null) {
+			ArrayList<BaseTransaction> newTransactions = SingletonLoadedWebContent
+					.getInstance().getTransactions();
+			if (newTransactions.size() > 0 && adapter != null) {
+				for (BaseTransaction baseTransaction : newTransactions) {
+					adapter.addItemAsStart(baseTransaction);
+					this.loadedItems.add(baseTransaction);
+				}
+				adapter.notifyDataSetChanged();
+			}
+			SingletonLoadedWebContent.getInstance().clearTransactions();
+		}
+
 	}
 
 }

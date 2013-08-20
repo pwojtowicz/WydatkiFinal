@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -215,6 +216,9 @@ public class TransactionListAdapter extends BaseAdapter {
 				.findViewById(R.id.row_transaction_note);
 		container.date = (TextView) convertView
 				.findViewById(R.id.row_transaction_date);
+		container.selected = (CheckBox) convertView
+				.findViewById(R.id.row_cbx_selected);
+		container.selected.setVisibility(View.GONE);
 		return container;
 	}
 
@@ -224,6 +228,7 @@ public class TransactionListAdapter extends BaseAdapter {
 		public TextView accounts;
 		public TextView note;
 		public TextView date;
+		public CheckBox selected;
 	}
 
 	public void clearItems() {
@@ -264,6 +269,28 @@ public class TransactionListAdapter extends BaseAdapter {
 			if (items.get(i) instanceof String)
 				items.remove(i);
 		}
+	}
+
+	public void setViewStateAsNoContent() {
+		actualControlState = ViewState.NoObjects;
+	}
+
+	public void addItemAsStart(BaseTransaction baseTransaction) {
+		items.add(0, baseTransaction);
+
+	}
+
+	public void removeItem(BaseTransaction baseTransaction) {
+		for (Object item : items) {
+			if (item instanceof BaseTransaction) {
+				BaseTransaction bt = (BaseTransaction) item;
+				if (bt.getId() == baseTransaction.getId()) {
+					items.remove(item);
+					break;
+				}
+			}
+		}
+
 	}
 
 }

@@ -1,7 +1,14 @@
 <resources>
 
-    <string name="app_name">WydatkiBasePackage</string>
-    
+    <string name="app_name">Wydatki</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_entities">EntitiesActivity</string>
+    <string name="title_activity_edit_item">EditItemActivity</string>
+    <string name="title_activity_transaction">TransactionActivity</string>
+    <string name="income">Przychody</string>
+    <string name="expenses">Wydatki</string>
+    <string name="title_activity_transaction_filter">Filtry</string>
+    <string name="title_activity_transaction_list">Transakcje</string>
     <string name="action_refresh">Odśwież</string>
     
     <string name="list_no_content">Brak elementów</string>

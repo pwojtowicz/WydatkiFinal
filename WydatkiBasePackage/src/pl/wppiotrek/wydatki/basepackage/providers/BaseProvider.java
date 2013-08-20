@@ -27,4 +27,9 @@ abstract class BaseProvider<T> implements IWebRequestRepository<T> {
 				properties, items);
 	}
 
+	@Override
+	public OperationResult delateItem(ModelBase item) {
+		String urlToContent = baseApiURL + controller + "/" + item.getId();
+		return provider.delete(urlToContent, credential, properties, item);
+	}
 }

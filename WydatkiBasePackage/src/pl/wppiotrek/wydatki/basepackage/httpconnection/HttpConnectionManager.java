@@ -25,12 +25,14 @@ public class HttpConnectionManager {
 
 		switch (requestType) {
 		case GET:
-			return requestGet(address, properties, credential, json);
+			return requestGet(EHttpRequestType.GET, address, properties,
+					credential, json);
 		case POST:
 		case PUT:
 			return requestPut(address, properties, credential, json);
 		case DELETE:
-			return requestDelete(json);
+			return requestGet(EHttpRequestType.DELETE, address, properties,
+					credential, json);
 		default:
 			return null;
 		}
@@ -72,8 +74,8 @@ public class HttpConnectionManager {
 		return connection;
 	}
 
-	private static HttpResponseBundle requestGet(String address,
-			HttpRequestProperties properties,
+	private static HttpResponseBundle requestGet(EHttpRequestType requestType,
+			String address, HttpRequestProperties properties,
 			HttpAuthorizationCredentials credential, String json)
 			throws HttpException {
 		HttpResponseBundle response = new HttpResponseBundle();
@@ -81,7 +83,7 @@ public class HttpConnectionManager {
 		int responseCode = 0;
 		int fileSize = 0;
 		try {
-			connection = getConnection(address, EHttpRequestType.GET);
+			connection = getConnection(address, requestType);
 			if (credential != null)
 				authenticate(connection, credential);
 			connection = setConnectionHeader(connection, properties);

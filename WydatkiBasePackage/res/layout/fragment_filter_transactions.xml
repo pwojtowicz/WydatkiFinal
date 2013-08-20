@@ -136,14 +136,40 @@
                     android:text="Data od"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <EditText
-                    android:id="@+id/etbx_filter_date_from"
-                    style="@style/Style_TextWithShadow"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:paddingLeft="16dp" />
+                    android:weightSum="1" >
+
+                    <Button
+                        android:id="@+id/btn_filter_date_from_date"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:background="@color/btn_blue"
+                        android:text="data" />
+
+                    <Button
+                        android:id="@+id/btn_filter_date_from_time"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:background="@color/btn_blue"
+                        android:text="godzina"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_filter_clear_date_from"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:background="@color/btn_blue"
+                        android:text="X" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textView6"
@@ -153,14 +179,40 @@
                     android:text="Data do"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <EditText
-                    android:id="@+id/etbx_filter_date_to"
-                    style="@style/Style_TextWithShadow"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="date"
-                    android:paddingLeft="16dp" />
+                    android:weightSum="1" >
+
+                    <Button
+                        android:id="@+id/btn_filter_date_to_date"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:background="@color/btn_blue"
+                        android:text="data" />
+
+                    <Button
+                        android:id="@+id/btn_filter_date_to_time"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:background="@color/btn_blue"
+                        android:text="godzina"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_filter_clear_date_to"
+                        style="@style/Style_TextWithShadow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:background="@color/btn_blue"
+                        android:text="X" />
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
@@ -172,27 +224,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:orientation="vertical"
         android:weightSum="1" >
 
         <Button
             android:id="@+id/btn_filter_clear"
             style="@style/Style_TextWithShadow"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_margin="4dp"
             android:layout_weight="0.5"
-            android:background="@color/semitransparent"
-            android:text="Wyczyść wszystko" />
+            android:background="@color/btn_blue"
+            android:drawableRight="@drawable/ic_action_delete"
+            android:text="Wyczyść filtry" />
 
-        <Button
-            android:id="@+id/btn_filter_save"
-            style="@style/Style_TextWithShadow"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_margin="4dp"
-            android:layout_weight="0.5"
-            android:background="@color/semitransparent"
-            android:text="Zapisz" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5" >
+
+            <Button
+                android:id="@+id/btn_filter_cancel"
+                style="@style/Style_TextWithShadow"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_margin="4dp"
+                android:layout_weight="0.5"
+                android:background="@color/btn_blue"
+                android:text="Anuluj" />
+
+            <Button
+                android:id="@+id/btn_filter_save"
+                style="@style/Style_TextWithShadow"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_margin="4dp"
+                android:layout_weight="0.5"
+                android:background="@color/btn_blue"
+                android:text="Zapisz" />
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction;
 
+import pl.wppiotrek.wydatki.basepackage.entities.Transaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,8 @@ public abstract class BaseFragment extends Fragment {
 	private int viewResourceId;
 	private View convertView;
 	private Context context;
+	protected Transaction currentTransaction = new Transaction();
+	private boolean wasOnceRestore;
 
 	// protected IFragmentActions actions;
 
@@ -53,9 +56,24 @@ public abstract class BaseFragment extends Fragment {
 		}
 
 		reload(false);
-		if (savedInstanceState != null)
+		if (currentTransaction.getId() > 0 && !wasOnceRestore)
+			restoreOnEditTransaction();
+		else if (savedInstanceState != null)
 			reloadSavedInstanceState(savedInstanceState);
+		else
+			configureAtStart();
 	}
+
+	private void restoreOnEditTransaction() {
+		if (!wasOnceRestore) {
+			restoreTransactionForEdit();
+			wasOnceRestore = true;
+		}
+	}
+
+	protected abstract void restoreTransactionForEdit();
+
+	protected abstract void configureAtStart();
 
 	protected View getCurrentView() {
 		return convertView;

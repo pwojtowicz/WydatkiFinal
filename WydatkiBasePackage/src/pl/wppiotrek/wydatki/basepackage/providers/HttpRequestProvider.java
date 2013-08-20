@@ -5,6 +5,7 @@ import java.util.Date;
 
 import pl.wppiotrek.wydatki.basepackage.entities.ItemContainer;
 import pl.wppiotrek.wydatki.basepackage.entities.ModelBase;
+import pl.wppiotrek.wydatki.basepackage.entities.MultiOperationResult;
 import pl.wppiotrek.wydatki.basepackage.entities.OperationResult;
 import pl.wppiotrek.wydatki.basepackage.httpconnection.EHttpRequestType;
 import pl.wppiotrek.wydatki.basepackage.httpconnection.HttpAuthorizationCredentials;
@@ -132,7 +133,7 @@ class HttpRequestProvider<T> {
 		return null;
 	}
 
-	public OperationResult createOrUpdateMany(String urlToContent,
+	public MultiOperationResult createOrUpdateMany(String urlToContent,
 			HttpAuthorizationCredentials credential,
 			HttpRequestProperties properties, ModelBase[] items) {
 		GsonBuilder gsonBuilder = new GsonBuilder();
@@ -152,11 +153,30 @@ class HttpRequestProvider<T> {
 			final Gson gson = gsonBuilder.create();
 			try {
 				return gson.fromJson(response.getResponseContent(),
-						OperationResult.class);
+						MultiOperationResult.class);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 
+		} catch (HttpException e) {
+			e.printStackTrace();
+		}
+		return new MultiOperationResult(false);
+	}
+
+	public OperationResult delete(String urlToContent,
+			HttpAuthorizationCredentials credential,
+			HttpRequestProperties properties, ModelBase item) {
+		try {
+			HttpResponseBundle response = HttpConnectionManager.sendRequest(
+					EHttpRequestType.DELETE, credential, properties,
+					urlToContent, null, null);
+			if (response.getResponseStatusCode() == 200) {
+				final Gson gson = new GsonBuilder().create();
+
+				return gson.fromJson(response.getResponseContent(),
+						OperationResult.class);
+			}
 		} catch (HttpException e) {
 			e.printStackTrace();
 		}
