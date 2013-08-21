@@ -648,38 +648,6 @@ public class InvokeTransactionFragment extends BaseFragment implements
 		}
 	}
 
-	public class ValidationHelper {
-		private boolean isValid = false;
-		private String errorMessage;
-		private Transaction item;
-
-		public boolean isValid() {
-			if (item != null) {
-
-				if (item.getValue() == 0.0) {
-					errorMessage = "Nie podano kwoty, lub podana kwota jest zerowa.";
-					isValid = false;
-				} else if ((item.getAccMinus() == 0 || item.getAccPlus() == 0)
-						&& item.getCategory().getId() <= 0) {
-					errorMessage = "Nie wybrano kategorii dla transakcji.";
-					isValid = false;
-				}
-
-			}
-
-			return isValid;
-		}
-
-		public String getErrorMessage() {
-			return errorMessage;
-		}
-
-		public Transaction getItem() {
-			return item;
-		}
-
-	}
-
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 

@@ -47,6 +47,7 @@
         <activity
             android:name="pl.wppiotrek.wydatki.basepackage.activities.TransactionActivity"
             android:label="@string/title_activity_transaction"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" >
         </activity>
         <activity

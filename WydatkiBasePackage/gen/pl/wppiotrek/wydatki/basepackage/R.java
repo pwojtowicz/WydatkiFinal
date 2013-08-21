@@ -9,7 +9,7 @@ package pl.wppiotrek.wydatki.basepackage;
 
 public final class R {
     public static final class array {
-        public static final int parameter_types=0x7f060000;
+        public static final int parameter_types=0x7f070000;
     }
     public static final class attr {
     }
@@ -318,51 +318,51 @@ public final class R {
         public static final int transaction_list=0x7f090005;
     }
     public static final class string {
-        public static final int account_from=0x7f070021;
-        public static final int account_to=0x7f070022;
-        public static final int action_new_item=0x7f07001d;
-        public static final int action_refresh=0x7f070009;
-        public static final int action_settings=0x7f070001;
-        public static final int additional_parameters=0x7f070026;
-        public static final int app_name=0x7f070000;
-        public static final int balance=0x7f070024;
-        public static final int cancel=0x7f070029;
-        public static final int category=0x7f070023;
-        public static final int date_and_time=0x7f070020;
-        public static final int dialog_ok=0x7f070028;
-        public static final int expenses=0x7f070006;
-        public static final int income=0x7f070005;
-        public static final int list_get_more_data=0x7f07000b;
-        public static final int list_no_content=0x7f07000a;
-        public static final int no_selected_value=0x7f070027;
-        public static final int note=0x7f070025;
-        public static final int project=0x7f07001e;
-        public static final int standart_parameters=0x7f07001f;
-        public static final int switch_no=0x7f070017;
-        public static final int switch_yes=0x7f070016;
-        public static final int text_account_image=0x7f070010;
-        public static final int text_balance=0x7f07000d;
-        public static final int text_cancel=0x7f07001c;
-        public static final int text_category_add_parameter=0x7f07001a;
-        public static final int text_category_default_state=0x7f070018;
-        public static final int text_category_parent=0x7f070019;
-        public static final int text_default_value=0x7f070012;
-        public static final int text_elements_list_helper=0x7f070014;
-        public static final int text_is_active=0x7f070015;
-        public static final int text_list_elements=0x7f070013;
-        public static final int text_name=0x7f07000c;
-        public static final int text_parameter_type=0x7f070011;
-        public static final int text_save=0x7f07001b;
-        public static final int text_sum_in_global_balance=0x7f07000f;
-        public static final int text_visible_for_all=0x7f07000e;
-        public static final int title_activity_edit_item=0x7f070003;
-        public static final int title_activity_entities=0x7f070002;
-        public static final int title_activity_transaction=0x7f070004;
-        public static final int title_activity_transaction_filter=0x7f070007;
-        public static final int title_activity_transaction_list=0x7f070008;
+        public static final int account_from=0x7f080021;
+        public static final int account_to=0x7f080022;
+        public static final int action_new_item=0x7f08001d;
+        public static final int action_refresh=0x7f080009;
+        public static final int action_settings=0x7f080001;
+        public static final int additional_parameters=0x7f080026;
+        public static final int app_name=0x7f080000;
+        public static final int balance=0x7f080024;
+        public static final int cancel=0x7f080029;
+        public static final int category=0x7f080023;
+        public static final int date_and_time=0x7f080020;
+        public static final int dialog_ok=0x7f080028;
+        public static final int expenses=0x7f080006;
+        public static final int income=0x7f080005;
+        public static final int list_get_more_data=0x7f08000b;
+        public static final int list_no_content=0x7f08000a;
+        public static final int no_selected_value=0x7f080027;
+        public static final int note=0x7f080025;
+        public static final int project=0x7f08001e;
+        public static final int standart_parameters=0x7f08001f;
+        public static final int switch_no=0x7f080017;
+        public static final int switch_yes=0x7f080016;
+        public static final int text_account_image=0x7f080010;
+        public static final int text_balance=0x7f08000d;
+        public static final int text_cancel=0x7f08001c;
+        public static final int text_category_add_parameter=0x7f08001a;
+        public static final int text_category_default_state=0x7f080018;
+        public static final int text_category_parent=0x7f080019;
+        public static final int text_default_value=0x7f080012;
+        public static final int text_elements_list_helper=0x7f080014;
+        public static final int text_is_active=0x7f080015;
+        public static final int text_list_elements=0x7f080013;
+        public static final int text_name=0x7f08000c;
+        public static final int text_parameter_type=0x7f080011;
+        public static final int text_save=0x7f08001b;
+        public static final int text_sum_in_global_balance=0x7f08000f;
+        public static final int text_visible_for_all=0x7f08000e;
+        public static final int title_activity_edit_item=0x7f080003;
+        public static final int title_activity_entities=0x7f080002;
+        public static final int title_activity_transaction=0x7f080004;
+        public static final int title_activity_transaction_filter=0x7f080007;
+        public static final int title_activity_transaction_list=0x7f080008;
     }
     public static final class style {
-        public static final int AppBase=0x7f080003;
+        public static final int AppBase=0x7f060004;
         /** 
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
@@ -375,13 +375,14 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080000;
-        public static final int AppTheme=0x7f080001;
-        public static final int EditTextAppTheme=0x7f080004;
-        public static final int ProgressBarAppTheme=0x7f080008;
-        public static final int SpinnerAppTheme=0x7f080005;
-        public static final int SpinnerAppTheme_DropDown=0x7f080006;
-        public static final int SpinnerDropDownItemAppTheme=0x7f080007;
-        public static final int Style_TextWithShadow=0x7f080002;
+        public static final int AppBaseTheme=0x7f060001;
+        public static final int AppTheme=0x7f060002;
+        public static final int EditTextAppTheme=0x7f060005;
+        public static final int Invoke_LL_Padding=0x7f060000;
+        public static final int ProgressBarAppTheme=0x7f060009;
+        public static final int SpinnerAppTheme=0x7f060006;
+        public static final int SpinnerAppTheme_DropDown=0x7f060007;
+        public static final int SpinnerDropDownItemAppTheme=0x7f060008;
+        public static final int Style_TextWithShadow=0x7f060003;
     }
 }

@@ -13,9 +13,8 @@ import pl.wppiotrek.wydatki.basepackage.entities.OperationResult;
 import pl.wppiotrek.wydatki.basepackage.enums.OperationType;
 import pl.wppiotrek.wydatki.basepackage.enums.ProviderType;
 import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.ITransactionListener;
-import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.InvokeTransactionFragment;
-import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.InvokeTransactionFragment.ValidationHelper;
 import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.NewInvokeTransactionFragment;
+import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.ValidationHelper;
 import pl.wppiotrek.wydatki.basepackage.singletons.SingletonLoadedWebContent;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.AsyncTaskDownloadContent;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.TaskParameters;
@@ -119,11 +118,10 @@ public class TransactionActivity extends ExpensesBaseActivity implements
 			ArrayList<BaseTransaction> transactions = new ArrayList<BaseTransaction>();
 			String errorMessage = null;
 			for (FragmentInfo fragment : fragments) {
-				ValidationHelper validation = ((InvokeTransactionFragment) fragment
+				ValidationHelper validation = ((NewInvokeTransactionFragment) fragment
 						.getFragment()).getCurrentTransaction();
 				if (validation.isValid()) {
-					BaseTransaction bt = validation.getItem()
-							.toBaseTransaction();
+					BaseTransaction bt = validation.getItem();
 					bt.setObjectHash(String.valueOf(System.identityHashCode(bt)));
 					transactions.add(bt);
 				} else {

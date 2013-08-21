@@ -9,9 +9,12 @@ import java.util.Date;
 import pl.wppiotrek.wydatki.basepackage.R;
 import pl.wppiotrek.wydatki.basepackage.adapters.InvokeTransactionAdapter;
 import pl.wppiotrek.wydatki.basepackage.adapters.SpinnerAdapter;
+import pl.wppiotrek.wydatki.basepackage.adapters.SpinnerAdapter.SpinerHelper;
 import pl.wppiotrek.wydatki.basepackage.entities.Account;
 import pl.wppiotrek.wydatki.basepackage.entities.BaseTransaction;
 import pl.wppiotrek.wydatki.basepackage.entities.Category;
+import pl.wppiotrek.wydatki.basepackage.entities.InvokeTransactionParameter;
+import pl.wppiotrek.wydatki.basepackage.entities.Parameter;
 import pl.wppiotrek.wydatki.basepackage.entities.Project;
 import pl.wppiotrek.wydatki.basepackage.entities.SpinnerObject;
 import pl.wppiotrek.wydatki.basepackage.helpers.UnitConverter;
@@ -25,6 +28,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -206,6 +211,7 @@ public class NewInvokeTransactionFragment extends Fragment implements
 			setTime();
 		}
 	};
+	private boolean hasAdditionalParameters;
 
 	private void setTime() {
 		Calendar cal = Calendar.getInstance();
@@ -285,8 +291,76 @@ public class NewInvokeTransactionFragment extends Fragment implements
 			ll_category.setVisibility(LinearLayout.VISIBLE);
 			ll_project.setVisibility(LinearLayout.VISIBLE);
 			isPositive.setVisibility(ToggleButton.VISIBLE);
+
+			categories.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+				public void onItemSelected(AdapterView<?> adapterView,
+						View view, int index, long id) {
+					SpinerHelper oh = (SpinerHelper) view.getTag();
+					onCategoryChange(oh.object);
+				}
+
+				public void onNothingSelected(AdapterView<?> adapterView) {
+				}
+			});
 		}
 
+	}
+
+	protected void onCategoryChange(SpinnerObject object) {
+		if (!isTransfer) {
+			// ArrayList<Category> cat = globals.getCategoriesList();
+			ArrayList<InvokeTransactionParameter> parameters = new ArrayList<InvokeTransactionParameter>();
+			// if (cat != null) {
+
+			addParameterForCategoryId(object.getId(), parameters);
+
+			// }
+			if (parameters.size() > 0) {
+				additionParametersTextView.setVisibility(TextView.VISIBLE);
+				hasAdditionalParameters = true;
+			} else {
+				additionParametersTextView.setVisibility(TextView.GONE);
+				hasAdditionalParameters = false;
+			}
+			Category c = globals.getCategoryById(object.getId());
+			if (c != null) {
+				isPositive.setChecked(c.isPositive());
+			}
+			if (adapter == null)
+				adapter = new InvokeTransactionAdapter(getActivity(),
+						parameters);
+			else
+				adapter.setParamaters(parameters);
+
+			list.setAdapter(adapter);
+
+		}
+	}
+
+	private void addParameterForCategoryId(int categoryId,
+			ArrayList<InvokeTransactionParameter> parameters) {
+		Category item = globals.getCategoryById(categoryId);
+		if (item != null) {
+			if (item.getId() == categoryId) {
+
+				if (item.getParentId() > 0)
+					addParameterForCategoryId(item.getParentId(), parameters);
+
+				if (item.getAttributes() != null)
+					for (Parameter parameter : item.getAttributes()) {
+						parameter = globals.getParameterById(parameter.getId());
+
+						InvokeTransactionParameter param = new InvokeTransactionParameter(
+								parameter.getId(), parameter.getName(),
+								parameter.getTypeId(),
+								parameter.getDefaultValue(),
+								parameter.getDataSource());
+						parameters.add(param);
+
+					}
+			}
+		}
 	}
 
 	private void reloadSpinners() {
@@ -388,5 +462,50 @@ public class NewInvokeTransactionFragment extends Fragment implements
 				android.R.layout.simple_spinner_item, strArray);
 
 		projects.setAdapter(adapter);
+	}
+
+	public ValidationHelper getCurrentTransaction() {
+		prepareToSaved();
+
+		ValidationHelper result = new ValidationHelper();
+		result.isValid = true;
+		result.item = currentTransaction;
+
+		return result;
+	}
+
+	private void prepareToSaved() {
+		if (categories != null) {
+			SpinnerObject so = (SpinnerObject) categories.getSelectedItem();
+			if (so != null) {
+				currentTransaction.setCategoryId(so.getId());
+			}
+		}
+		if (accountFrom != null) {
+			SpinnerObject so = (SpinnerObject) accountFrom.getSelectedItem();
+			if (so != null) {
+				if (so != null)
+					if (isPositive.isChecked())
+						currentTransaction.setAccPlus(so.getId());
+					else
+						currentTransaction.setAccMinus(so.getId());
+			}
+		}
+		if (accountTo != null) {
+			SpinnerObject so = (SpinnerObject) accountTo.getSelectedItem();
+			if (so != null) {
+				currentTransaction.setAccPlus(so.getId());
+			}
+		}
+		if (projects != null) {
+			SpinnerObject so = (SpinnerObject) projects.getSelectedItem();
+			if (so != null) {
+				currentTransaction.setProjectId(so.getId());
+			}
+		}
+		currentTransaction.setDate(helper.getDate());
+
+		helper.transaction = currentTransaction;
+
 	}
 }
