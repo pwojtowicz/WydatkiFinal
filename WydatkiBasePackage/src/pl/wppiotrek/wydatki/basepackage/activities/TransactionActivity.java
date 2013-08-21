@@ -15,6 +15,7 @@ import pl.wppiotrek.wydatki.basepackage.enums.ProviderType;
 import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.ITransactionListener;
 import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.InvokeTransactionFragment;
 import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.InvokeTransactionFragment.ValidationHelper;
+import pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction.NewInvokeTransactionFragment;
 import pl.wppiotrek.wydatki.basepackage.singletons.SingletonLoadedWebContent;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.AsyncTaskDownloadContent;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.TaskParameters;
@@ -73,14 +74,22 @@ public class TransactionActivity extends ExpensesBaseActivity implements
 		fragments = new ArrayList<FragmentInfo>();
 
 		Bundle b = new Bundle();
-		b.putBoolean(InvokeTransactionFragment.BUNDLE_IS_NEW_TRANSFER,
-				isTransfer);
+		b.putBoolean(NewInvokeTransactionFragment.BUNDLE_IS_TRANSER, isTransfer);
 		b.putInt("INDEX", i);
 		if (transaction != null)
-			b.putSerializable(InvokeTransactionFragment.BUNDLE_TRANSACTION,
+			b.putSerializable(
+					NewInvokeTransactionFragment.BUNDLE_EDIT_TRANSACTION,
 					transaction);
 
-		fragments.add(new FragmentInfo(new InvokeTransactionFragment(),
+		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
+				"Transakcja " + String.valueOf(i), b));
+		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
+				"Transakcja " + String.valueOf(i), b));
+		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
+				"Transakcja " + String.valueOf(i), b));
+		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
+				"Transakcja " + String.valueOf(i), b));
+		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
 				"Transakcja " + String.valueOf(i), b));
 
 		fAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);

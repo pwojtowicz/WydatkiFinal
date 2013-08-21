@@ -1,14 +1,23 @@
 package pl.wppiotrek.wydatki.basepackage.fragment.invoketransaction;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 import pl.wppiotrek.wydatki.basepackage.R;
 import pl.wppiotrek.wydatki.basepackage.adapters.InvokeTransactionAdapter;
 import pl.wppiotrek.wydatki.basepackage.adapters.SpinnerAdapter;
+import pl.wppiotrek.wydatki.basepackage.entities.Account;
 import pl.wppiotrek.wydatki.basepackage.entities.BaseTransaction;
+import pl.wppiotrek.wydatki.basepackage.entities.Category;
 import pl.wppiotrek.wydatki.basepackage.entities.Project;
 import pl.wppiotrek.wydatki.basepackage.entities.SpinnerObject;
+import pl.wppiotrek.wydatki.basepackage.helpers.UnitConverter;
 import pl.wppiotrek.wydatki.basepackage.singletons.SingletonLoadedWebContent;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,18 +26,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
-public class NewInvokeTransactionFragment extends Fragment {
+public class NewInvokeTransactionFragment extends Fragment implements
+		OnClickListener {
 
-	private static final String BUNDLE_EDIT_TRANSACTION = "pl.wydatki.editTransaction";
-
-	private static final String BUNDLE_IS_TRANSER = "pl.wydatki.isTransfer";
+	public static final String BUNDLE_EDIT_TRANSACTION = "pl.wydatki.editTransaction";
+	public static final String BUNDLE_IS_TRANSER = "pl.wydatki.isTransfer";
 
 	BaseTransaction currentTransaction = null;
 
@@ -47,8 +58,8 @@ public class NewInvokeTransactionFragment extends Fragment {
 	private Button btn_time;
 	private Button btn_date;
 	private InvokeTransactionAdapter adapter;
-
 	private boolean isTransfer;
+	private TransactionHelper helper;
 
 	private SingletonLoadedWebContent globals = SingletonLoadedWebContent
 			.getInstance();
@@ -64,11 +75,15 @@ public class NewInvokeTransactionFragment extends Fragment {
 		if (getArguments() != null) {
 			currentTransaction = (BaseTransaction) getArguments()
 					.getSerializable(BUNDLE_EDIT_TRANSACTION);
-
-			if (currentTransaction == null)
+			helper = new TransactionHelper();
+			if (currentTransaction == null) {
 				isTransfer = getArguments()
 						.getBoolean(BUNDLE_IS_TRANSER, false);
-			else {
+
+				helper.setDate(new Date());
+			} else {
+				helper.transaction = currentTransaction;
+				helper.setDate(currentTransaction.getDate());
 				if (currentTransaction.getAccMinus() > 0
 						&& currentTransaction.getAccPlus() > 0)
 					isTransfer = true;
@@ -134,8 +149,8 @@ public class NewInvokeTransactionFragment extends Fragment {
 		btn_date = (Button) header
 				.findViewById(R.id.invoke_transaction_header_btn_date);
 
-		// btn_time.setOnClickListener(this);
-		// btn_date.setOnClickListener(this);
+		btn_time.setOnClickListener(this);
+		btn_date.setOnClickListener(this);
 
 		list.addHeaderView(header);
 		list.addFooterView(footer);
@@ -151,19 +166,106 @@ public class NewInvokeTransactionFragment extends Fragment {
 				// showCalculatorInput();
 			}
 		});
+	}
 
+	@Override
+	public void onClick(View view) {
+		if (view == btn_time)
+			new TimePickerDialog(getActivity(), mTimeSetListener, helper.hour,
+					helper.minute, true).show();
+		else
+			new DatePickerDialog(getActivity(), mDateSetListener, helper.year,
+					helper.month, helper.day).show();
+	}
+
+	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+		public void onDateSet(DatePicker view, int year, int monthOfYear,
+				int dayOfMonth) {
+			helper.year = year;
+			helper.month = monthOfYear;
+			helper.day = dayOfMonth;
+			setDate();
+
+		}
+	};
+
+	private void setDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, helper.year);
+		cal.set(Calendar.MONTH, helper.month);
+		cal.set(Calendar.DAY_OF_MONTH, helper.day);
+
+		btn_date.setText(UnitConverter.convertDateToString(cal.getTime()));
+	}
+
+	private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+		public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
+			helper.hour = hourOfDay;
+			helper.minute = minuteOfHour;
+			setTime();
+		}
+	};
+
+	private void setTime() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, helper.hour);
+		cal.set(Calendar.MINUTE, helper.minute);
+
+		btn_time.setText(UnitConverter.convertTimeToString(cal.getTime()));
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
+		configureViews();
+		reloadSpinners();
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		configureViews();
-		reloadSpinners();
+		restoreHelper();
+	}
+
+	private void restoreHelper() {
+		if (helper != null) {
+			note.setText(helper.transaction.getNote());
+			value.setText(helper.value);
+
+			setDate();
+			setTime();
+
+			if (accountFrom != null)
+				accountFrom.setSelection(helper.accMinusPosition);
+			if (accountTo != null)
+				accountTo.setSelection(helper.accPlusPosition);
+			if (categories != null)
+				categories.setSelection(helper.categoryPosition);
+			if (projects != null)
+				projects.setSelection(helper.projektPosition);
+		}
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		saveHelper();
+	}
+
+	private void saveHelper() {
+		helper.transaction.setNote(note.getText().toString());
+		helper.value = value.getText().toString();
+		if (accountFrom != null)
+			helper.accMinusPosition = accountFrom.getSelectedItemPosition();
+		if (accountTo != null)
+			helper.accPlusPosition = accountTo.getSelectedItemPosition();
+		if (categories != null)
+			helper.categoryPosition = categories.getSelectedItemPosition();
+		if (projects != null)
+			helper.projektPosition = projects.getSelectedItemPosition();
+
 	}
 
 	private void configureViews() {
@@ -188,20 +290,82 @@ public class NewInvokeTransactionFragment extends Fragment {
 	}
 
 	private void reloadSpinners() {
-		reloadAccouns();
+		reloadAccouns(accountFrom);
+		reloadAccouns(accountTo);
 		reloadCategories();
 		reloadProjects();
-
 	}
 
-	private void reloadAccouns() {
-		// TODO Auto-generated method stub
+	private void reloadAccouns(Spinner spinner) {
+		if (spinner != null) {
+			ArrayList<Account> accounts = globals.getAccounts();
 
+			if (accounts != null) {
+				ArrayList<SpinnerObject> items = new ArrayList<SpinnerObject>();
+				for (Account item : accounts) {
+					if (item.isActive())
+						items.add(new SpinnerObject(item.getId(), item
+								.getName()
+								+ " "
+								+ UnitConverter.doubleToCurrency(item
+										.getBalance())));
+				}
+
+				SpinnerObject[] strArray = new SpinnerObject[items.size()];
+				items.toArray(strArray);
+
+				SpinnerAdapter adapter = new SpinnerAdapter(getActivity(),
+						android.R.layout.simple_spinner_item, strArray);
+				spinner.setAdapter(adapter);
+
+			}
+		}
 	}
 
 	private void reloadCategories() {
-		// TODO Auto-generated method stub
+		ArrayList<Category> loadedItems = globals.getCategories();
+		if (loadedItems != null) {
+			sortCategories(loadedItems);
+			ArrayList<SpinnerObject> items = new ArrayList<SpinnerObject>();
+			items.add(new SpinnerObject(-1, getText(R.string.no_selected_value)
+					.toString()));
 
+			int blockCategoryId = -1;
+			for (Category item : loadedItems) {
+				if (!item.isActive()) {
+					blockCategoryId = item.getId();
+					continue;
+				}
+				if (item.isActive() && item.getParentId() != blockCategoryId) {
+					if (item.getParentId() > 0) {
+						items.add(new SpinnerObject(item.getId(), item.getLvl()
+								+ item.getName()));
+					} else {
+						items.add(new SpinnerObject(item.getId(), item
+								.getName()));
+					}
+				}
+				if (item.getParentId() == blockCategoryId)
+					blockCategoryId = item.getId();
+
+			}
+
+			SpinnerObject[] strArray = new SpinnerObject[items.size()];
+			items.toArray(strArray);
+
+			SpinnerAdapter adapter = new SpinnerAdapter(getActivity(),
+					android.R.layout.simple_spinner_item, strArray);
+			categories.setAdapter(adapter);
+		}
+	}
+
+	private void sortCategories(ArrayList<Category> categories) {
+		Collections.sort(categories, new Comparator<Category>() {
+			@Override
+			public int compare(Category lhs, Category rhs) {
+				return lhs.getRn().compareToIgnoreCase(rhs.getRn());
+			}
+		});
 	}
 
 	private void reloadProjects() {
