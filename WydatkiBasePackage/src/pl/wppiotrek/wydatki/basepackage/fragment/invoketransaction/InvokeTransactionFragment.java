@@ -42,6 +42,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
+import com.google.gson.annotations.SerializedName;
+
 public class InvokeTransactionFragment extends BaseFragment implements
 		OnClickListener {
 
@@ -472,17 +474,36 @@ public class InvokeTransactionFragment extends BaseFragment implements
 	}
 
 	private class TransactionHelper implements Serializable {
+
+		@SerializedName("note")
 		private String note = "";
+
+		@SerializedName("accMinusPosition")
 		private int accMinusPosition = -1;
+
+		@SerializedName("accPlusPosition")
 		private int accPlusPosition = -1;
+
+		@SerializedName("categoryPosition")
 		private int categoryPosition = -1;
+
+		@SerializedName("projektPosition")
 		private int projektPosition = -1;
+
+		@SerializedName("value")
 		private String value = "";
+
+		@SerializedName("Year")
 		private int Year;
+		@SerializedName("month")
 		private int month;
+		@SerializedName("day")
 		private int day;
+		@SerializedName("hour")
 		private int hour;
+		@SerializedName("minute")
 		private int minute;
+		@SerializedName("items")
 		ArrayList<InvokeTransactionParameter> items;
 
 		public TransactionHelper() {
@@ -661,10 +682,11 @@ public class InvokeTransactionFragment extends BaseFragment implements
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
+
 		prepareToSave();
 		saveValues();
 		outState.putSerializable(SAVED_STATE_TRANSACTION, helper);
+		super.onSaveInstanceState(outState);
 	}
 
 	@Override
