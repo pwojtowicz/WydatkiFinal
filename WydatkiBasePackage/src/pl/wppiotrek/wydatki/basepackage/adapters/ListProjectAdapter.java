@@ -12,10 +12,8 @@ import android.widget.TextView;
 public class ListProjectAdapter extends
 		ListViewWithSelectionAdapter<Project, ProjectContainer> {
 
-	public ListProjectAdapter(Context context, boolean isSelectionEnabled,
-			IOnSelectionChangeListener changeStateListener) {
-		super(context, 0, R.layout.row_project_layout, isSelectionEnabled,
-				changeStateListener);
+	public ListProjectAdapter(Context context) {
+		super(context, 0, R.layout.row_project_layout);
 	}
 
 	@Override
@@ -27,18 +25,20 @@ public class ListProjectAdapter extends
 				.findViewById(R.id.row_project_name);
 		container.Selection = (CheckBox) convertView
 				.findViewById(R.id.row_cbx_selected);
-		if (!isSelectionEnabled)
-			container.Selection.setVisibility(View.GONE);
-		else
-			container.Selection
-					.setOnCheckedChangeListener(changeSelectionListener);
+
 		return container;
 	}
 
 	@Override
 	protected void fillContentRow(View convertView, Project object,
-			ProjectContainer controlContainer, int position) {
-		controlContainer.Selection.setTag(object);
+			ProjectContainer controlContainer, int position,
+			boolean isItemSelected) {
+		if (!isSelectionEnabled)
+			controlContainer.Selection.setVisibility(View.GONE);
+		else {
+			controlContainer.Selection.setVisibility(View.VISIBLE);
+			controlContainer.Selection.setChecked(isItemSelected);
+		}
 		controlContainer.Name.setText(object.getName());
 
 		if (object.isActive())

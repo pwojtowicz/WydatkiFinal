@@ -4,13 +4,16 @@ import java.io.Serializable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MultiOperationResult implements Serializable {
+public class MultiOperationResult<T> implements Serializable {
 
 	@SerializedName("isSuccess")
 	public boolean isSuccess;
 
 	@SerializedName("results")
 	private ObjectResult[] objectResults;
+
+	@SerializedName("additionalObjects")
+	private T[] additionalObjects;
 
 	public MultiOperationResult(boolean isSuccess) {
 		this.isSuccess = isSuccess;

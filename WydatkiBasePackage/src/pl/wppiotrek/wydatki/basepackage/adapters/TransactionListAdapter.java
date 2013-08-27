@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class TransactionListAdapter extends BaseAdapter {
 	private View controlView;
 	private ViewState actualControlState = ViewState.Normal;
 	private int takeNextCount = 0;
+	private boolean showSelectionCheckBox = false;
 
 	public TransactionListAdapter(Context context) {
 		this.context = context;
@@ -68,7 +70,7 @@ public class TransactionListAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return position;
+		return 0;
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class TransactionListAdapter extends BaseAdapter {
 		if (convertView == null)
 			convertView = prepareView(convertView, actualRowType);
 
-		fillView(actualRowType, position, convertView);
+		fillView(actualRowType, position, convertView, parent);
 
 		return convertView;
 	}
@@ -98,7 +100,8 @@ public class TransactionListAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void fillView(int actualRowType, int position, View convertView) {
+	private void fillView(int actualRowType, int position, View convertView,
+			ViewGroup parent) {
 		if (actualRowType != ERowTypes.ROW_CONTENT)
 			this.controlView = convertView;
 
@@ -108,7 +111,7 @@ public class TransactionListAdapter extends BaseAdapter {
 			break;
 		case ERowTypes.ROW_CONTENT:
 			fillTransactionView((BaseTransaction) getItem(position),
-					convertView);
+					convertView, parent, position);
 			break;
 		}
 	}
@@ -141,10 +144,19 @@ public class TransactionListAdapter extends BaseAdapter {
 	}
 
 	private void fillTransactionView(BaseTransaction transaction,
-			View convertView) {
+			View convertView, ViewGroup parent, int position) {
 		TransactionAdapterObjectHandler container = (TransactionAdapterObjectHandler) convertView
 				.getTag();
 		if (container != null) {
+
+			if (showSelectionCheckBox) {
+				container.selected.setVisibility(View.VISIBLE);
+				container.selected.setChecked(((ListView) parent)
+						.isItemChecked(position));
+			} else {
+				container.selected.setVisibility(View.GONE);
+			}
+
 			if (transaction != null) {
 				StringBuilder accounts = new StringBuilder();
 				if (transaction.getAccMinus() > 0) {
@@ -159,9 +171,12 @@ public class TransactionListAdapter extends BaseAdapter {
 						&& transaction.getAccPlus() > 0)
 					accounts.append(" >> ");
 
-				if (transaction.getAccPlus() > 0)
-					accounts.append(globals.getAccountById(
-							transaction.getAccPlus()).getName());
+				if (transaction.getAccPlus() > 0) {
+					Account acc = globals.getAccountById(transaction
+							.getAccPlus());
+					if (acc != null)
+						accounts.append(acc.getName());
+				}
 
 				String categoryName = "";
 
@@ -291,6 +306,11 @@ public class TransactionListAdapter extends BaseAdapter {
 			}
 		}
 
+	}
+
+	public void setSelectable(boolean showSelectionCheckBox) {
+		this.showSelectionCheckBox = showSelectionCheckBox;
+		notifyDataSetChanged();
 	}
 
 }

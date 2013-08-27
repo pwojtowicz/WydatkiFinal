@@ -3,6 +3,7 @@ package pl.wppiotrek.wydatki.basepackage.adapters;
 import pl.wppiotrek.wydatki.basepackage.R;
 import pl.wppiotrek.wydatki.basepackage.adapters.ListAccountAdapter.AccountContainer;
 import pl.wppiotrek.wydatki.basepackage.entities.Account;
+import pl.wppiotrek.wydatki.basepackage.entities.ModelBase;
 import pl.wppiotrek.wydatki.basepackage.helpers.AccountImages;
 import pl.wppiotrek.wydatki.basepackage.helpers.UnitConverter;
 import android.content.Context;
@@ -14,10 +15,14 @@ import android.widget.TextView;
 public class ListAccountAdapter extends
 		ListViewWithSelectionAdapter<Account, AccountContainer> {
 
-	public ListAccountAdapter(Context context, boolean isSelectionEnabled,
-			IOnSelectionChangeListener changeStateListener) {
-		super(context, 0, R.layout.row_account_layout, isSelectionEnabled,
-				changeStateListener);
+	public ListAccountAdapter(Context context) {
+		super(context, 0, R.layout.row_account_layout);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		ModelBase mb = (ModelBase) getItem(position);
+		return mb.getId();
 	}
 
 	@Override
@@ -35,19 +40,22 @@ public class ListAccountAdapter extends
 				.findViewById(R.id.row_account_balance);
 		container.Selection = (CheckBox) convertView
 				.findViewById(R.id.row_cbx_selected);
-		if (!isSelectionEnabled)
-			container.Selection.setVisibility(View.GONE);
-		else
-			container.Selection
-					.setOnCheckedChangeListener(changeSelectionListener);
+
 		return container;
 	}
 
 	@Override
 	protected void fillContentRow(View convertView, Account object,
-			AccountContainer controlContainer, int position) {
+			AccountContainer controlContainer, int position,
+			boolean isItemSelected) {
 
-		controlContainer.Selection.setTag(object);
+		if (!isSelectionEnabled)
+			controlContainer.Selection.setVisibility(View.GONE);
+		else {
+			controlContainer.Selection.setVisibility(View.VISIBLE);
+			controlContainer.Selection.setChecked(isItemSelected);
+		}
+
 		controlContainer.Name.setText(object.getName());
 
 		controlContainer.LastActionDate.setText(UnitConverter

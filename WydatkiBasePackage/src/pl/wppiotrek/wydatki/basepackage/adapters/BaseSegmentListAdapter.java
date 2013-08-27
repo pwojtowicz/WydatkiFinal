@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public abstract class BaseSegmentListAdapter<T, K> extends BaseAdapter {
@@ -97,7 +98,7 @@ public abstract class BaseSegmentListAdapter<T, K> extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup arg2) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 		int actualRowType = getItemViewType(position);
 
 		if (convertView == null)
@@ -118,7 +119,7 @@ public abstract class BaseSegmentListAdapter<T, K> extends BaseAdapter {
 		if (actualRowType == ERowTypes.ROW_CONTENT) {
 
 			fillContentRow(convertView, (T) object, (K) convertView.getTag(),
-					position);
+					position, ((ListView) parent).isItemChecked(position));
 		} else if (actualRowType == ERowTypes.ROW_HEADER) {
 			fillHeaderRow(convertView, (String) object, position);
 		} else if (actualRowType == ERowTypes.ROW_NO_DATA) {
@@ -134,7 +135,7 @@ public abstract class BaseSegmentListAdapter<T, K> extends BaseAdapter {
 	protected abstract K loadContentControlls(View convertView);
 
 	protected abstract void fillContentRow(View convertView, T object,
-			K controlContainer, int position);
+			K controlContainer, int position, boolean isItemSelected);
 
 	public void fillHeaderRow(View convertView, String object, int position) {
 		TextView tv = (TextView) convertView.findViewById(R.id.tv_text);

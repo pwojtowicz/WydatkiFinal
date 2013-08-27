@@ -46,8 +46,6 @@ public class NewInvokeTransactionFragment extends Fragment implements
 	public static final String BUNDLE_EDIT_TRANSACTION = "pl.wydatki.editTransaction";
 	public static final String BUNDLE_IS_TRANSER = "pl.wydatki.isTransfer";
 
-	BaseTransaction currentTransaction = null;
-
 	private ListView list;
 	private LinearLayout ll_accountTo;
 	private LinearLayout ll_category;
@@ -68,6 +66,7 @@ public class NewInvokeTransactionFragment extends Fragment implements
 
 	private SingletonLoadedWebContent globals = SingletonLoadedWebContent
 			.getInstance();
+	private BaseTransaction currentTransaction;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,13 +86,22 @@ public class NewInvokeTransactionFragment extends Fragment implements
 
 				helper.setDate(new Date());
 			} else {
-				helper.transaction = currentTransaction;
-				helper.setDate(currentTransaction.getDate());
-				if (currentTransaction.getAccMinus() > 0
-						&& currentTransaction.getAccPlus() > 0)
-					isTransfer = true;
+				updateHelperByTransaction();
 			}
 		}
+	}
+
+	protected void updateHelperByTransaction() {
+		helper.transaction = currentTransaction;
+		helper.setDate(currentTransaction.getDate());
+		if (currentTransaction.getAccMinus() > 0
+				&& currentTransaction.getAccPlus() > 0)
+			isTransfer = true;
+		else {
+			helper.singleAccountId = currentTransaction.getAccMinus() > 0 ? currentTransaction
+					.getAccMinus() : currentTransaction.getAccPlus();
+		}
+		helper.value = String.valueOf(currentTransaction.getValue());
 	}
 
 	@Override
@@ -240,6 +248,11 @@ public class NewInvokeTransactionFragment extends Fragment implements
 			note.setText(helper.transaction.getNote());
 			value.setText(helper.value);
 
+			if (!isTransfer) {
+				if (helper.transaction.getAccPlus() > 0)
+					isPositive.setChecked(true);
+			}
+
 			setDate();
 			setTime();
 
@@ -263,10 +276,22 @@ public class NewInvokeTransactionFragment extends Fragment implements
 	private void saveHelper() {
 		helper.transaction.setNote(note.getText().toString());
 		helper.value = value.getText().toString();
-		if (accountFrom != null)
-			helper.accMinusPosition = accountFrom.getSelectedItemPosition();
-		if (accountTo != null)
-			helper.accPlusPosition = accountTo.getSelectedItemPosition();
+		if (helper.value.length() > 0) {
+			try {
+				double value = Double.parseDouble(helper.value);
+				helper.transaction.setValue(value);
+			} catch (Exception e) {
+			}
+		}
+
+		if (isTransfer) {
+			if (accountFrom != null)
+				helper.accMinusPosition = accountFrom.getSelectedItemPosition();
+			if (accountTo != null)
+				helper.accPlusPosition = accountTo.getSelectedItemPosition();
+		} else {
+
+		}
 		if (categories != null)
 			helper.categoryPosition = categories.getSelectedItemPosition();
 		if (projects != null)
@@ -364,13 +389,17 @@ public class NewInvokeTransactionFragment extends Fragment implements
 	}
 
 	private void reloadSpinners() {
-		reloadAccouns(accountFrom);
-		reloadAccouns(accountTo);
-		reloadCategories();
-		reloadProjects();
+		if (isTransfer) {
+			reloadAccouns(accountFrom, helper.transaction.getAccMinus());
+			reloadAccouns(accountTo, helper.transaction.getAccPlus());
+		} else {
+			reloadAccouns(accountFrom, helper.singleAccountId);
+			reloadCategories();
+			reloadProjects();
+		}
 	}
 
-	private void reloadAccouns(Spinner spinner) {
+	private void reloadAccouns(Spinner spinner, int accountId) {
 		if (spinner != null) {
 			ArrayList<Account> accounts = globals.getAccounts();
 
@@ -385,12 +414,16 @@ public class NewInvokeTransactionFragment extends Fragment implements
 										.getBalance())));
 				}
 
+				int position = searchActualSelectedSpinnerPosition(items,
+						accountId);
+
 				SpinnerObject[] strArray = new SpinnerObject[items.size()];
 				items.toArray(strArray);
 
 				SpinnerAdapter adapter = new SpinnerAdapter(getActivity(),
 						android.R.layout.simple_spinner_item, strArray);
 				spinner.setAdapter(adapter);
+				spinner.setSelection(position, true);
 
 			}
 		}
@@ -424,13 +457,30 @@ public class NewInvokeTransactionFragment extends Fragment implements
 
 			}
 
+			int position = searchActualSelectedSpinnerPosition(items,
+					helper.transaction.getCategoryId());
+
 			SpinnerObject[] strArray = new SpinnerObject[items.size()];
 			items.toArray(strArray);
 
 			SpinnerAdapter adapter = new SpinnerAdapter(getActivity(),
 					android.R.layout.simple_spinner_item, strArray);
 			categories.setAdapter(adapter);
+			categories.setSelection(position, true);
 		}
+	}
+
+	private int searchActualSelectedSpinnerPosition(
+			ArrayList<SpinnerObject> items, int searchValue) {
+		if (searchValue > 0) {
+			int i = 0;
+			for (SpinnerObject item : items) {
+				if (item.getId() == searchValue)
+					return i;
+				i++;
+			}
+		}
+		return 0;
 	}
 
 	private void sortCategories(ArrayList<Category> categories) {
@@ -455,6 +505,9 @@ public class NewInvokeTransactionFragment extends Fragment implements
 					items.add(new SpinnerObject(item.getId(), item.getName()));
 			}
 
+		int position = searchActualSelectedSpinnerPosition(items,
+				helper.transaction.getProjectId());
+
 		SpinnerObject[] strArray = new SpinnerObject[items.size()];
 		items.toArray(strArray);
 
@@ -462,14 +515,16 @@ public class NewInvokeTransactionFragment extends Fragment implements
 				android.R.layout.simple_spinner_item, strArray);
 
 		projects.setAdapter(adapter);
+		projects.setSelection(position, true);
 	}
 
 	public ValidationHelper getCurrentTransaction() {
+		saveHelper();
 		prepareToSaved();
 
 		ValidationHelper result = new ValidationHelper();
 		result.isValid = true;
-		result.item = currentTransaction;
+		result.item = helper.transaction;
 
 		return result;
 	}
@@ -478,34 +533,40 @@ public class NewInvokeTransactionFragment extends Fragment implements
 		if (categories != null) {
 			SpinnerObject so = (SpinnerObject) categories.getSelectedItem();
 			if (so != null) {
-				currentTransaction.setCategoryId(so.getId());
+				helper.transaction.setCategoryId(so.getId());
 			}
 		}
-		if (accountFrom != null) {
+		if (isTransfer) {
+			if (accountFrom != null) {
+				SpinnerObject so = (SpinnerObject) accountFrom
+						.getSelectedItem();
+				if (so != null) {
+					helper.transaction.setAccMinus(so.getId());
+				}
+			}
+			if (accountTo != null) {
+				SpinnerObject so = (SpinnerObject) accountTo.getSelectedItem();
+				if (so != null) {
+					helper.transaction.setAccPlus(so.getId());
+				}
+			}
+		} else {
 			SpinnerObject so = (SpinnerObject) accountFrom.getSelectedItem();
 			if (so != null) {
-				if (so != null)
-					if (isPositive.isChecked())
-						currentTransaction.setAccPlus(so.getId());
-					else
-						currentTransaction.setAccMinus(so.getId());
-			}
-		}
-		if (accountTo != null) {
-			SpinnerObject so = (SpinnerObject) accountTo.getSelectedItem();
-			if (so != null) {
-				currentTransaction.setAccPlus(so.getId());
+				if (isPositive.isChecked())
+					helper.transaction.setAccPlus(so.getId());
+				else
+					helper.transaction.setAccMinus(so.getId());
+				helper.singleAccountId = so.getId();
 			}
 		}
 		if (projects != null) {
 			SpinnerObject so = (SpinnerObject) projects.getSelectedItem();
 			if (so != null) {
-				currentTransaction.setProjectId(so.getId());
+				helper.transaction.setProjectId(so.getId());
 			}
 		}
-		currentTransaction.setDate(helper.getDate());
-
-		helper.transaction = currentTransaction;
+		helper.transaction.setDate(helper.getDate());
 
 	}
 }

@@ -4,25 +4,25 @@
     <item
         android:id="@+id/action_create_account"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="collapseActionView"
         android:title="Konto"/>
     
     <item
         android:id="@+id/action_create_category"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="collapseActionView"
         android:title="Kategoria"/>
     
     <item
         android:id="@+id/action_create_parameter"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="collapseActionView"
         android:title="Parametr"/>
     
     <item
         android:id="@+id/action_create_project"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        android:showAsAction="collapseActionView"
         android:title="Projekt"/>
     
     

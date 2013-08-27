@@ -13,6 +13,7 @@ import pl.wppiotrek.wydatki.basepackage.entities.ItemContainer;
 import pl.wppiotrek.wydatki.basepackage.entities.TransactionFilter;
 import pl.wppiotrek.wydatki.basepackage.enums.ViewState;
 import pl.wppiotrek.wydatki.basepackage.singletons.SingletonLoadedWebContent;
+import pl.wppiotrek.wydatki.basepackage.support.VibratorSupport;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.AsyncTaskDownloadContent;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.EDownloadState;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.IDownloadFromWebListener;
@@ -24,6 +25,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ActionMode;
+import android.view.ActionMode.Callback;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,17 +69,26 @@ public class ListTransactionFragment extends Fragment implements
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.transaction_list, menu);
-
+		inflater.inflate(R.menu.menu_refresh, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.action_filter) {
+		int id = item.getItemId();
+		if (id == R.id.action_filter) {
 			showFilterActivity();
+			return true;
+		} else if (id == R.id.action_refresh) {
+			refresh();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void refresh() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void linkViews(View convertView) {
@@ -108,13 +120,62 @@ public class ListTransactionFragment extends Fragment implements
 		}
 	};
 
+	protected ActionMode mActionMode;
+
 	OnItemLongClickListener listViewLongItemClickListener = new OnItemLongClickListener() {
+
+		private Callback callbackActionMode = new Callback() {
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				if (listView.getCheckedItemCount() > 1)
+					menu.findItem(R.id.action_edit).setVisible(false);
+				else
+					menu.findItem(R.id.action_edit).setVisible(true);
+				return true;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+				mActionMode = null;
+				adapter.setSelectable(false);
+				listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+				listView.clearChoices();
+			}
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				MenuInflater inflater = mode.getMenuInflater();
+				inflater.inflate(R.menu.menu_trabsaction_cab, menu);
+				return true;
+			}
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
 
 		@Override
 		public boolean onItemLongClick(AdapterView<?> a, View view,
 				int position, long arg3) {
+			VibratorSupport.vibrate(50);
+			if (mActionMode != null) {
+				return true;
+			}
+
 			if (adapter.getItemViewType(position) == ERowTypes.ROW_CONTENT) {
-				onListItemLongClick(adapter.getItem(position));
+				if (listView.getChoiceMode() == ListView.CHOICE_MODE_SINGLE) {
+					listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+					listView.clearChoices();
+					mActionMode = getActivity().startActionMode(
+							callbackActionMode);
+					adapter.setSelectable(true);
+					listView.setItemChecked(position, true);
+					reloadActionMode();
+				}
+
 				return true;
 			}
 			return false;
@@ -127,10 +188,18 @@ public class ListTransactionFragment extends Fragment implements
 		@Override
 		public void onItemClick(AdapterView<?> a, View view, int position,
 				long arg3) {
+
 			if (adapter.getItemViewType(position) == ERowTypes.ROW_CONTENT)
-				onListItemClick(adapter.getItem(position));
-			else
+				if (listView.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
+					reloadActionMode();
+				} else
+					onListItemClick(adapter.getItem(position));
+			else {
 				onListItemClick(adapter.getActualViewState());
+				if (listView.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE)
+					listView.setItemChecked(position, false);
+			}
+
 		}
 	};
 
@@ -138,6 +207,20 @@ public class ListTransactionFragment extends Fragment implements
 
 	public void setAccount(Account account) {
 		this.currentAccount = account;
+	}
+
+	protected void reloadActionMode() {
+		if (mActionMode == null)
+			return;
+		int count = listView.getCheckedItemCount();
+		if (count > 0) {
+			mActionMode.setTitle("Zaznaczone " + count);
+			mActionMode.invalidate();
+		} else {
+			mActionMode.finish();
+			mActionMode = null;
+		}
+		adapter.notifyDataSetChanged();
 	}
 
 	public TransactionFilter getFilter() {
@@ -253,12 +336,6 @@ public class ListTransactionFragment extends Fragment implements
 			tv_loaded_count.setVisibility(View.GONE);
 	}
 
-	protected void onListItemLongClick(Object item) {
-		if (item instanceof BaseTransaction) {
-
-		}
-	}
-
 	protected void onListItemClick(Object item) {
 		if (item instanceof BaseTransaction) {
 			Intent intent = new Intent(getActivity(),
@@ -353,6 +430,18 @@ public class ListTransactionFragment extends Fragment implements
 				adapter.notifyDataSetChanged();
 			}
 			SingletonLoadedWebContent.getInstance().clearTransactions();
+		}
+
+	}
+
+	public void onNoLongerVisibled() {
+		if (mActionMode != null) {
+			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			listView.clearChoices();
+			mActionMode.finish();
+			mActionMode = null;
+			adapter.setSelectable(false);
+			adapter.notifyDataSetChanged();
 		}
 
 	}

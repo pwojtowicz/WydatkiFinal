@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import pl.wppiotrek.wydatki.basepackage.R;
 import pl.wppiotrek.wydatki.basepackage.adapters.ListViewWithSelectionAdapter;
-import pl.wppiotrek.wydatki.basepackage.adapters.ListViewWithSelectionAdapter.IOnSelectionChangeListener;
 import pl.wppiotrek.wydatki.basepackage.entities.ModelBase;
 import pl.wppiotrek.wydatki.basepackage.enums.OperationType;
 import pl.wppiotrek.wydatki.basepackage.enums.ProviderType;
@@ -17,17 +16,20 @@ import pl.wppiotrek.wydatki.basepackage.webacynctasks.TaskParameters;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
+import android.view.ActionMode.Callback;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 public abstract class BaseSelectedListFragment<T> extends Fragment implements
-		IOnSelectionChangeListener, IDownloadFromWebListener,
-		OnItemLongClickListener {
+		IDownloadFromWebListener, OnItemLongClickListener, OnItemClickListener {
 
 	SingletonLoadedWebContent singleton = SingletonLoadedWebContent
 			.getInstance();
@@ -75,8 +77,10 @@ public abstract class BaseSelectedListFragment<T> extends Fragment implements
 	public void onResume() {
 		super.onResume();
 
-		if (listView != null)
+		if (listView != null) {
 			listView.setOnItemLongClickListener(this);
+			listView.setOnItemClickListener(this);
+		}
 
 		reloadListView();
 	}
@@ -118,39 +122,74 @@ public abstract class BaseSelectedListFragment<T> extends Fragment implements
 		}
 	}
 
-	protected OnClickListener lockSelectedItems = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			boolean newState = false;
-			if (v == btn_lock)
-				newState = false;
-			else if (v == btn_unlock)
-				newState = true;
-
-			ModelBase[] items = getSelectedItems(newState);
-			changeItemsActivityStates(items);
-		}
-	};
 	private AsyncTaskDownloadContent upadteContentTask;
 
-	private ImageButton btn_lock;
-	private ImageButton btn_unlock;
+	private ActionMode mActionMode;
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_add_new_item) {
-			createNewItem(mCallbacks);
+	private Callback multiSelectionItemListener = new Callback() {
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			if (listView.getCheckedItemCount() > 1)
+				menu.findItem(R.id.action_edit).setVisible(false);
+			else
+				menu.findItem(R.id.action_edit).setVisible(true);
 			return true;
 		}
 
-		return super.onOptionsItemSelected(item);
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			mActionMode = null;
+			adapter.setIsSelectionEnabled(false);
+			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			listView.clearChoices();
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+
+			MenuInflater inflater = mode.getMenuInflater();
+			inflater.inflate(R.menu.menu_cab_object_list, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch (item.getItemId()) {
+			case R.id.action_lock:
+				changeActiveState(getSelectedItems(), false);
+				return true;
+			case R.id.action_unlock:
+				changeActiveState(getSelectedItems(), true);
+				return true;
+
+			default:
+				break;
+			}
+			return false;
+		}
+
+	};
+
+	private ModelBase[] itemsToUpdate;
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.menu_refresh, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
-	protected abstract void createNewItem(IBaseListCallback callbacks);
+	protected void changeActiveState(ArrayList<ModelBase> selectedItems,
+			boolean isActive) {
+		int size = selectedItems.size();
+		ModelBase[] items = new ModelBase[size];
+		for (int i = 0; i < size; i++) {
+			ModelBase mb = selectedItems.get(i);
+			mb.setActive(isActive);
+			items[i] = mb.cloneBase();
+		}
+		this.itemsToUpdate = items;
 
-	protected void changeItemsActivityStates(ModelBase[] items) {
 		if (items != null && items.length > 0) {
 			if (upadteContentTask != null) {
 				upadteContentTask.cancel(true);
@@ -163,49 +202,97 @@ public abstract class BaseSelectedListFragment<T> extends Fragment implements
 
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == R.id.action_add_new_item) {
+			createNewItem(mCallbacks);
+			return true;
+		} else if (id == R.id.action_refresh) {
+			refresh();
+			return true;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void refresh() {
+		loadItemsContent();
+	}
+
+	protected abstract void createNewItem(IBaseListCallback callbacks);
+
 	protected abstract ProviderType getProviderType();
 
-	protected ModelBase[] getSelectedItems(boolean newState) {
+	protected ArrayList<ModelBase> getSelectedItems() {
 		if (adapter != null) {
-			ModelBase[] returnItems = adapter.getSelectedItems();
-
-			ModelBase[] items = new ModelBase[returnItems.length];
-			for (int i = 0; i < returnItems.length; i++) {
-				ModelBase it = returnItems[i];
-
-				ModelBase item = new ModelBase();
-				item.setId(it.getId());
-				item.setActive(newState);
-				items[i] = item;
+			ArrayList<ModelBase> items = new ArrayList<ModelBase>();
+			SparseBooleanArray selectedItems = listView
+					.getCheckedItemPositions();
+			int count = selectedItems.size();
+			for (int position = 0; position < count; position++) {
+				if (selectedItems.valueAt(position)) {
+					items.add((ModelBase) adapter.getItem(selectedItems
+							.keyAt(position)));
+				}
 			}
 			return items;
 		}
-		return null;
+		return new ArrayList<ModelBase>();
 	}
 
-	protected void linkFooterActions(View footer_selected) {
-		footer_selected.setVisibility(View.GONE);
-
-		if (footer_selected != null) {
-			btn_lock = (ImageButton) footer_selected
-					.findViewById(R.id.ibtn_lock);
-			btn_lock.setOnClickListener(lockSelectedItems);
-
-			btn_unlock = (ImageButton) footer_selected
-					.findViewById(R.id.ibtn_unlock);
-			btn_unlock.setOnClickListener(lockSelectedItems);
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			long itemId) {
+		if (mActionMode != null) {
+			if (listView.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
+				reloadActionMode();
+			}
 		}
 	}
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-			int position, long arg3) {
+			int position, long itemId) {
 		VibratorSupport.vibrate(50);
-		ModelBase item = (ModelBase) adapter.getItem(position);
-
-		mCallbacks.onAddItemAction(item);
-
+		if (mActionMode != null)
+			return true;
+		if (listView.getChoiceMode() == ListView.CHOICE_MODE_SINGLE) {
+			listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+			listView.clearChoices();
+			mActionMode = getActivity().startActionMode(
+					multiSelectionItemListener);
+			listView.setItemChecked(position, true);
+			adapter.setIsSelectionEnabled(true);
+			reloadActionMode();
+			return true;
+		}
 		return false;
+	}
+
+	protected void reloadActionMode() {
+		if (mActionMode == null)
+			return;
+		int count = listView.getCheckedItemCount();
+		if (count > 0) {
+			mActionMode.setTitle("Zaznaczone " + count);
+			mActionMode.invalidate();
+		} else {
+			mActionMode.finish();
+			mActionMode = null;
+		}
+		adapter.notifyDataSetChanged();
+	}
+
+	public void onNoLongerVisibled() {
+		if (mActionMode != null) {
+			listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			listView.clearChoices();
+			mActionMode.finish();
+			mActionMode = null;
+			adapter.setIsSelectionEnabled(false);
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 }

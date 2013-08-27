@@ -82,14 +82,6 @@ public class TransactionActivity extends ExpensesBaseActivity implements
 
 		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
 				"Transakcja " + String.valueOf(i), b));
-		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
-				"Transakcja " + String.valueOf(i), b));
-		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
-				"Transakcja " + String.valueOf(i), b));
-		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
-				"Transakcja " + String.valueOf(i), b));
-		fragments.add(new FragmentInfo(new NewInvokeTransactionFragment(),
-				"Transakcja " + String.valueOf(i), b));
 
 		fAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments);
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -190,6 +182,8 @@ public class TransactionActivity extends ExpensesBaseActivity implements
 	}
 
 	protected void dialogonResult(OperationResult result) {
+
+		task = null;
 		if (dialog != null) {
 			dialog.dismiss();
 			dialog = null;

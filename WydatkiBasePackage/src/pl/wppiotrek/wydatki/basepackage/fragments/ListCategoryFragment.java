@@ -4,6 +4,7 @@ import pl.wppiotrek.wydatki.basepackage.R;
 import pl.wppiotrek.wydatki.basepackage.adapters.ListCategoryAdapter;
 import pl.wppiotrek.wydatki.basepackage.entities.Category;
 import pl.wppiotrek.wydatki.basepackage.entities.ItemContainer;
+import pl.wppiotrek.wydatki.basepackage.entities.OperationResult;
 import pl.wppiotrek.wydatki.basepackage.enums.ProviderType;
 import pl.wppiotrek.wydatki.basepackage.interfaces.IBaseListCallback;
 import pl.wppiotrek.wydatki.basepackage.webacynctasks.EDownloadState;
@@ -31,9 +32,7 @@ public class ListCategoryFragment extends BaseSelectedListFragment<Category>
 
 	private void linkViews(View convertView) {
 		listView = (ListView) convertView.findViewById(R.id.listView);
-		footer_selected = (LinearLayout) convertView
-				.findViewById(R.id.footer_list_selected_items_options);
-		linkFooterActions(footer_selected);
+
 	}
 
 	protected boolean loadContentFromSingleton() {
@@ -46,8 +45,7 @@ public class ListCategoryFragment extends BaseSelectedListFragment<Category>
 
 	protected void reloadItemsAdapter() {
 		if (adapter == null) {
-			adapter = new ListCategoryAdapter(getActivity(),
-					isSelectionEnabled, this);
+			adapter = new ListCategoryAdapter(getActivity());
 		}
 		if (listView.getAdapter() == null)
 			listView.setAdapter(adapter);
@@ -69,17 +67,10 @@ public class ListCategoryFragment extends BaseSelectedListFragment<Category>
 			ItemContainer<Category> container = (ItemContainer<Category>) response;
 			items = container.getItemsList();
 			reloadItemsAdapter();
+		} else if (response instanceof OperationResult) {
+
 		}
 
-	}
-
-	@Override
-	public void onListSelectionChanged(int numberOfSelectedItems) {
-		if (numberOfSelectedItems > 0) {
-			footer_selected.setVisibility(View.VISIBLE);
-		} else {
-			footer_selected.setVisibility(View.GONE);
-		}
 	}
 
 	@Override

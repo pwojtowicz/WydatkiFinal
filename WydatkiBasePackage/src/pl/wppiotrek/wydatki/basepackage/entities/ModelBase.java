@@ -12,6 +12,13 @@ public class ModelBase implements Serializable {
 	@SerializedName("isActive")
 	private boolean isActive;
 
+	public ModelBase cloneBase() {
+		ModelBase clone = new ModelBase();
+		clone.setId(this.getId());
+		clone.setActive(this.isActive());
+		return clone;
+	}
+
 	public ModelBase() {
 
 	}

@@ -6,6 +6,7 @@
 
     <ListView
         android:id="@+id/listView"
+        android:choiceMode="singleChoice"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layout_footer"
@@ -18,11 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical" >
-
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            layout="@layout/footer_list_selected_items_options" />
 
         <RelativeLayout
             android:id="@+id/layout_account_summary"

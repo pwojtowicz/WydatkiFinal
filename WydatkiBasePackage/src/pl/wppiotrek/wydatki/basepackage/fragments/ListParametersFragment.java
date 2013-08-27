@@ -31,9 +31,7 @@ public class ListParametersFragment extends BaseSelectedListFragment<Parameter>
 
 	private void linkViews(View convertView) {
 		listView = (ListView) convertView.findViewById(R.id.listView);
-		footer_selected = (LinearLayout) convertView
-				.findViewById(R.id.footer_list_selected_items_options);
-		linkFooterActions(footer_selected);
+
 	}
 
 	protected boolean loadContentFromSingleton() {
@@ -46,8 +44,7 @@ public class ListParametersFragment extends BaseSelectedListFragment<Parameter>
 
 	protected void reloadItemsAdapter() {
 		if (adapter == null) {
-			adapter = new ListParameterAdapter(getActivity(),
-					isSelectionEnabled, this);
+			adapter = new ListParameterAdapter(getActivity());
 		}
 		if (listView.getAdapter() == null)
 			listView.setAdapter(adapter);
@@ -71,15 +68,6 @@ public class ListParametersFragment extends BaseSelectedListFragment<Parameter>
 			reloadItemsAdapter();
 		}
 
-	}
-
-	@Override
-	public void onListSelectionChanged(int numberOfSelectedItems) {
-		if (numberOfSelectedItems > 0) {
-			footer_selected.setVisibility(View.VISIBLE);
-		} else {
-			footer_selected.setVisibility(View.GONE);
-		}
 	}
 
 	@Override

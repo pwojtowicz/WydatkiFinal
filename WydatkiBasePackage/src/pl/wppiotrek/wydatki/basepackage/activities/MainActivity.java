@@ -24,6 +24,7 @@ import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -50,6 +51,7 @@ public class MainActivity extends FragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
+		inflater.inflate(R.menu.create_items, menu);
 		return true;
 	}
 
@@ -59,6 +61,10 @@ public class MainActivity extends FragmentActivity implements
 		int itemId = item.getItemId();
 
 		switch (itemId) {
+		case R.id.action_settings:
+			Intent intent = new Intent(this, EntitiesActivity.class);
+			startActivity(intent);
+			return true;
 		case R.id.action_create_account:
 			itemObject = new Account();
 			break;
@@ -129,6 +135,29 @@ public class MainActivity extends FragmentActivity implements
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(fAdapter);
 
+		mViewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					private int actualPage = 0;
+
+					@Override
+					public void onPageSelected(int position) {
+						if (actualPage != position)
+							onFragmentHide(actualPage);
+						actualPage = position;
+					}
+
+					private void onFragmentHide(int previousPage) {
+						FragmentInfo fi = fragments.get(previousPage);
+						Fragment fragment = fi.getFragment();
+						if (fragment instanceof BaseSelectedListFragment)
+							((BaseSelectedListFragment) fragment)
+									.onNoLongerVisibled();
+						else if (fragment instanceof ListTransactionFragment)
+							((ListTransactionFragment) fragment)
+									.onNoLongerVisibled();
+					}
+				});
+
 	}
 
 	@Override
@@ -181,7 +210,9 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		outState.putInt(SAVED_STATE_ACTUAL_PAGE, mViewPager.getCurrentItem());
+		if (mViewPager != null)
+			outState.putInt(SAVED_STATE_ACTUAL_PAGE,
+					mViewPager.getCurrentItem());
 		super.onSaveInstanceState(outState);
 	}
 

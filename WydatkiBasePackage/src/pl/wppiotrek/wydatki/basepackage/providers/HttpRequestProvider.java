@@ -94,6 +94,17 @@ class HttpRequestProvider<T> {
 					EHttpRequestType.PUT, credential, properties, urlToContent,
 					null, json);
 
+			if (response != null) {
+				if (response.getResponseStatusCode() == 200)
+					try {
+
+						return gson.fromJson(response.getResponseContent(),
+								OperationResult.class);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+			}
+
 		} catch (HttpException e) {
 			e.printStackTrace();
 		}

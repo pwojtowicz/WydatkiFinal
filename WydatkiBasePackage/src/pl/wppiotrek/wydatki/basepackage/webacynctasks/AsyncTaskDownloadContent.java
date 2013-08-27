@@ -1,10 +1,8 @@
 package pl.wppiotrek.wydatki.basepackage.webacynctasks;
 
 import pl.wppiotrek.wydatki.basepackage.providers.ProviderManager;
-import android.os.AsyncTask;
 
-public class AsyncTaskDownloadContent extends
-		AsyncTask<TaskParameters, Void, Object> {
+public class AsyncTaskDownloadContent extends BaseLoadContentAsyncTask {
 
 	private IDownloadFromWebListener listener;
 	private boolean wasSuccess = false;
@@ -21,6 +19,7 @@ public class AsyncTaskDownloadContent extends
 
 	@Override
 	protected Object doInBackground(TaskParameters... params) {
+		super.doInBackground(params);
 		Object response = null;
 		if (params[0] == null)
 			return null;
@@ -33,7 +32,8 @@ public class AsyncTaskDownloadContent extends
 			response = provider.getAll(parameters.provider, false);
 			break;
 		case ChangeActiveState:
-			provider.updateActiveStates(parameters.provider, parameters.items);
+			response = provider.updateActiveStates(parameters.provider,
+					parameters.items);
 			break;
 		case CreateOrUpdate:
 			response = provider.createOrUpdate(parameters.provider,

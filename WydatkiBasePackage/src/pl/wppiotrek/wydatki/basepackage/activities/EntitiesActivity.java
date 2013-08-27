@@ -65,9 +65,21 @@ public class EntitiesActivity extends FragmentActivity implements
 		// a reference to the Tab.
 		mViewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					private int actualPage = 0;
+
 					@Override
 					public void onPageSelected(int position) {
 						actionBar.setSelectedNavigationItem(position);
+						if (actualPage != position)
+							onFragmentHide(actualPage);
+						actualPage = position;
+					}
+
+					private void onFragmentHide(int previousPage) {
+						FragmentInfo fi = fragments.get(previousPage);
+						if (fi != null)
+							((BaseSelectedListFragment) fi.getFragment())
+									.onNoLongerVisibled();
 					}
 				});
 

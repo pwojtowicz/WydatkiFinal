@@ -10,6 +10,7 @@ public class TransactionHelper implements Serializable {
 
 	BaseTransaction transaction = new BaseTransaction();
 
+	int singleAccountId = 0;
 	int accMinusPosition = -1;
 	int accPlusPosition = -1;
 	int categoryPosition = -1;

@@ -12,10 +12,8 @@ import android.widget.TextView;
 public class ListCategoryAdapter extends
 		ListViewWithSelectionAdapter<Category, CategoryContainer> {
 
-	public ListCategoryAdapter(Context context, boolean isSelectionEnabled,
-			IOnSelectionChangeListener changeStateListener) {
-		super(context, 0, R.layout.row_category_layout, isSelectionEnabled,
-				changeStateListener);
+	public ListCategoryAdapter(Context context) {
+		super(context, 0, R.layout.row_category_layout);
 	}
 
 	@Override
@@ -27,18 +25,20 @@ public class ListCategoryAdapter extends
 				.findViewById(R.id.row_category_name);
 		container.Selection = (CheckBox) convertView
 				.findViewById(R.id.row_cbx_selected);
-		if (!isSelectionEnabled)
-			container.Selection.setVisibility(View.GONE);
-		else
-			container.Selection
-					.setOnCheckedChangeListener(changeSelectionListener);
+
 		return container;
 	}
 
 	@Override
 	protected void fillContentRow(View convertView, Category object,
-			CategoryContainer controlContainer, int position) {
-		controlContainer.Selection.setTag(object);
+			CategoryContainer controlContainer, int position,
+			boolean isItemSelected) {
+		if (!isSelectionEnabled)
+			controlContainer.Selection.setVisibility(View.GONE);
+		else {
+			controlContainer.Selection.setVisibility(View.VISIBLE);
+			controlContainer.Selection.setChecked(isItemSelected);
+		}
 		controlContainer.Name.setText(object.getName());
 
 		if (object.isActive())

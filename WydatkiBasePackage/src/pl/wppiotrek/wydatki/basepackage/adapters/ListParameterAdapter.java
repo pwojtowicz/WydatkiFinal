@@ -13,10 +13,8 @@ import android.widget.TextView;
 public class ListParameterAdapter extends
 		ListViewWithSelectionAdapter<Parameter, ParameterContainer> {
 
-	public ListParameterAdapter(Context context, boolean isSelectionEnabled,
-			IOnSelectionChangeListener changeStateListener) {
-		super(context, 0, R.layout.row_parameter_layout, isSelectionEnabled,
-				changeStateListener);
+	public ListParameterAdapter(Context context) {
+		super(context, 0, R.layout.row_parameter_layout);
 	}
 
 	@Override
@@ -32,18 +30,20 @@ public class ListParameterAdapter extends
 				.findViewById(R.id.row_parameter_type);
 		container.Selection = (CheckBox) convertView
 				.findViewById(R.id.row_cbx_selected);
-		if (!isSelectionEnabled)
-			container.Selection.setVisibility(View.GONE);
-		else
-			container.Selection
-					.setOnCheckedChangeListener(changeSelectionListener);
+
 		return container;
 	}
 
 	@Override
 	protected void fillContentRow(View convertView, Parameter object,
-			ParameterContainer controlContainer, int position) {
-		controlContainer.Selection.setTag(object);
+			ParameterContainer controlContainer, int position,
+			boolean isItemSelected) {
+		if (!isSelectionEnabled)
+			controlContainer.Selection.setVisibility(View.GONE);
+		else {
+			controlContainer.Selection.setVisibility(View.VISIBLE);
+			controlContainer.Selection.setChecked(isItemSelected);
+		}
 		if (object.isActive())
 			controlContainer.Lock.setVisibility(ImageView.GONE);
 		else

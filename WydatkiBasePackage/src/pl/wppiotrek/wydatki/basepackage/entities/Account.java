@@ -1,26 +1,19 @@
 package pl.wppiotrek.wydatki.basepackage.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Account extends ModelBase implements Serializable {
+public class Account extends AccountShort implements Serializable {
 
 	@SerializedName("name")
 	private String name;
-
-	@SerializedName("balance")
-	private Double balance;
 
 	@SerializedName("isVisibleForAll")
 	private Boolean isVisibleForAll;
 
 	@SerializedName("isSumInGlobalBalance")
 	private Boolean isSumInGlobalBalance;
-
-	@SerializedName("lastUpdateDateTime")
-	private Date lastActionDate;
 
 	@SerializedName("imageIndex")
 	private Byte imageIndex;
@@ -49,14 +42,6 @@ public class Account extends ModelBase implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Double getBalance() {
-		return balance;
-	}
-
-	public void setBalance(Double balance) {
-		this.balance = balance;
 	}
 
 	/**
@@ -97,14 +82,6 @@ public class Account extends ModelBase implements Serializable {
 		this.imageIndex = imageIndex;
 	}
 
-	public Date getLastActionDate() {
-		return lastActionDate;
-	}
-
-	public void setLastActionDate(Date lastActionDate) {
-		this.lastActionDate = lastActionDate;
-	}
-
 	public int getOwnerId() {
 		return ownerId;
 	}
@@ -113,8 +90,4 @@ public class Account extends ModelBase implements Serializable {
 		this.ownerId = ownerId;
 	}
 
-	public void setBalance(String string) {
-		string = string.replace(",", ".").replace(" ", "");
-		this.balance = Double.parseDouble(string);
-	}
 }

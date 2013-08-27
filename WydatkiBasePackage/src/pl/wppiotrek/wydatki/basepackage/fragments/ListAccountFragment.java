@@ -36,9 +36,7 @@ public class ListAccountFragment extends BaseSelectedListFragment<Account>
 		listView = (ListView) convertView.findViewById(R.id.listView);
 		tv_account_balance = (TextView) convertView
 				.findViewById(R.id.tv_account_balance);
-		footer_selected = (LinearLayout) convertView
-				.findViewById(R.id.footer_list_selected_items_options);
-		linkFooterActions(footer_selected);
+
 	}
 
 	protected boolean loadContentFromSingleton() {
@@ -51,8 +49,7 @@ public class ListAccountFragment extends BaseSelectedListFragment<Account>
 
 	protected void reloadItemsAdapter() {
 		if (adapter == null) {
-			adapter = new ListAccountAdapter(getActivity(), isSelectionEnabled,
-					this);
+			adapter = new ListAccountAdapter(getActivity());
 		}
 		if (listView.getAdapter() == null)
 			listView.setAdapter(adapter);
@@ -84,15 +81,6 @@ public class ListAccountFragment extends BaseSelectedListFragment<Account>
 			items = container.getItemsList();
 			reloadItemsAdapter();
 
-		}
-	}
-
-	@Override
-	public void onListSelectionChanged(int numberOfSelectedItems) {
-		if (numberOfSelectedItems > 0) {
-			footer_selected.setVisibility(View.VISIBLE);
-		} else {
-			footer_selected.setVisibility(View.GONE);
 		}
 	}
 
